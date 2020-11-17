@@ -25,7 +25,7 @@ const GetCoronaAmpelStatusIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
     },
     handle(handlerInput) {
-        const speakOutput = "Die Postleitzahl ist " + handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
+        const speakOutput = ""
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
