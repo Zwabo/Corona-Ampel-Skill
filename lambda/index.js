@@ -22,7 +22,7 @@ const LaunchRequestHandler = {
 const GetCoronaAmpelStatusIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent';
     },
     handle(handlerInput) {
         const speakOutput = "Die Postleitzahl ist " + handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
