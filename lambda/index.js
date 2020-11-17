@@ -28,7 +28,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
         let plz_string = plz[1] + plz[2] + "," + plz[3] + plz[4];
         
-        const speakOutput = "Die Postleitzahl ist " + ;
+        const speakOutput = "Die Postleitzahl ist " + plz_string;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
