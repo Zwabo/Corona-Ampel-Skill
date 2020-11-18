@@ -25,6 +25,7 @@ const GetCoronaAmpelStatusIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent';
     },
     handle(handlerInput) {
+        const url = "http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status";
         let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value.toString();
         let plzArr = [];
         
@@ -32,6 +33,8 @@ const GetCoronaAmpelStatusIntentHandler = {
             plzArr.push(+plz.charAt(i));
         }
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
+        
+        let gemObj = {};
         
         const speakOutput = "Die Postleitzahl ist " + plzString;
 
