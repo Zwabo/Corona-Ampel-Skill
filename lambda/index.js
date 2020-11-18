@@ -25,7 +25,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent';
     },
-    handle(handlerInput) {
+    async handle(handlerInput) {
         const url = "http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status";
         let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value.toString();
         let plzArr = [];
@@ -35,7 +35,16 @@ const GetCoronaAmpelStatusIntentHandler = {
         }
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
         
+        let result = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+        let obj = result.data.title;
         
+        return handlerInput.responseBuilder
+            .speak(obj)
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
+        
+        
+        /**
         axios.get('https://jsonplaceholder.typicode.com/todos/1')
             .then(res => {
                 let obj = res.data;
@@ -50,7 +59,7 @@ const GetCoronaAmpelStatusIntentHandler = {
                 .speak(speakOutput)
                 //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
                 .getResponse();
-            })
+            }) **/
         
         /**
         axios.get('https://jsonplaceholder.typicode.com/todos/1')
