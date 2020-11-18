@@ -35,8 +35,8 @@ const GetCoronaAmpelStatusIntentHandler = {
         }
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
         
-        let result = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
-        let obj = result.data.title;
+        let result = await axios.get('http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status/' + plz);
+        let obj = result.data.Warnstufe;
         
         return handlerInput.responseBuilder
             .speak(obj)
