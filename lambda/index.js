@@ -49,6 +49,12 @@ const GetCoronaAmpelStatusIntentHandler = {
                     //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
                     .getResponse();
             })
+            .catch(error => {
+                return handlerInput.responseBuilder
+                    .speak("Well, that didn't work... The error: " + error)
+                    //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+                    .getResponse();
+            })
     }
 };
 
