@@ -37,7 +37,7 @@ const GetCoronaAmpelStatusIntentHandler = {
 
         let speakOutput = "test";
 
-        axios.get('http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status/4020')
+        axios.get('https://jsonplaceholder.typicode.com/todos/1')
             .then(res => {
                 return "4"
             })
