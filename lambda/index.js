@@ -44,15 +44,10 @@ const GetCoronaAmpelStatusIntentHandler = {
             })
             .then(alertLevel => {
                 speakOutput = "Corona-Warnstufe" + alertLevel.title + "für Postleitzahl " + plzString;
-    
-                return handlerInput.responseBuilder
-                    .speak(speakOutput)
-                    //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-                    .getResponse();
             });
         
         return handlerInput.responseBuilder
-            .speak("Well, that didn't work... The error: ")
+            .speak(speakOutput)
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
         
