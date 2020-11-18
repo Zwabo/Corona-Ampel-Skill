@@ -36,37 +36,39 @@ const GetCoronaAmpelStatusIntentHandler = {
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
 
         let speakOutput = "test";
-        
-        axios.get('https://jsonplaceholder.typicode.com/todos/1')
-            .then(res => return JSON.parse(res.data))
-            .then (obj => speakOutput = res.title);
-            
-            
 
-/**
         axios.get('https://jsonplaceholder.typicode.com/todos/1')
-            .then(res => {
-                return "4"
-            })
-            .then(alertLevel => {
-                speakOutput = "Corona-Warnstufe" + alertLevel + "für Postleitzahl " + plzString;
-
+            .then(res => { return JSON.parse(res.data) })
+            .then(obj => {
+                speakOutput = res.title;
                 return handlerInput.responseBuilder
                     .speak(speakOutput)
                     //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
                     .getResponse();
             })
-            .catch(error => {
-                return handlerInput.responseBuilder
-                    .speak("Well, that didn't work... The error: " + error)
-                    //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-                    .getResponse();
-            })
-**/
-    return handlerInput.responseBuilder
-        .speak("Well, that didn't work...")
-        //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-        .getResponse();
+
+
+
+        /**
+                axios.get('https://jsonplaceholder.typicode.com/todos/1')
+                    .then(res => {
+                        return "4"
+                    })
+                    .then(alertLevel => {
+                        speakOutput = "Corona-Warnstufe" + alertLevel + "für Postleitzahl " + plzString;
+        
+                        return handlerInput.responseBuilder
+                            .speak(speakOutput)
+                            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+                            .getResponse();
+                    })
+                    .catch(error => {
+                        return handlerInput.responseBuilder
+                            .speak("Well, that didn't work... The error: " + error)
+                            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+                            .getResponse();
+                    })
+        **/
 
     }
 };
