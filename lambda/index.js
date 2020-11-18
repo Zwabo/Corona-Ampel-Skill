@@ -35,11 +35,11 @@ const GetCoronaAmpelStatusIntentHandler = {
         }
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
 
-        let speakOutput = "";
+        let speakOutput = "test";
 
         axios.get('http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status/' + plz)
             .then(res => {
-                return res.Warnstufe;
+                return "4"
             })
             .then(alertLevel => {
                 speakOutput = "Corona-Warnstufe" + alertLevel + "für Postleitzahl " + plzString;
