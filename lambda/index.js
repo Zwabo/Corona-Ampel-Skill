@@ -36,10 +36,11 @@ const GetCoronaAmpelStatusIntentHandler = {
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
         
         let result = await axios.get('http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status/' + plz);
-        let obj = result.data.Warnstufe;
+        
+        let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
         
         return handlerInput.responseBuilder
-            .speak(obj)
+            .speak(speakOutput)
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
     }
