@@ -37,26 +37,12 @@ const GetCoronaAmpelStatusIntentHandler = {
 
         let speakOutput = "test";
 
-        axios.get('https://jsonplaceholder.typicode.com/todos/1')
-            .then(res => { return JSON.parse(res.data) })
-            .then(obj => {
-                speakOutput = res.title;
-            })
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-
-
-
-        /**
                 axios.get('https://jsonplaceholder.typicode.com/todos/1')
                     .then(res => {
-                        return "4"
+                        return JSON.parse(res)
                     })
                     .then(alertLevel => {
-                        speakOutput = "Corona-Warnstufe" + alertLevel + "für Postleitzahl " + plzString;
+                        speakOutput = "Corona-Warnstufe" + alertLevel.title + "für Postleitzahl " + plzString;
         
                         return handlerInput.responseBuilder
                             .speak(speakOutput)
@@ -69,7 +55,6 @@ const GetCoronaAmpelStatusIntentHandler = {
                             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
                             .getResponse();
                     })
-        **/
 
     }
 };
