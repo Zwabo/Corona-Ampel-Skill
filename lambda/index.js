@@ -40,8 +40,9 @@ const GetCoronaAmpelStatusIntentHandler = {
         
         axios.get('https://jsonplaceholder.typicode.com/todos/1')
             .then(res => {
-                console.log(res.text())
+                return res.text();
             })
+            .then(text => console.log(text));
             /**
             .then(alertLevel => {
                 speakOutput = "Corona-Warnstufe" + alertLevel.title + "für Postleitzahl " + plzString;
