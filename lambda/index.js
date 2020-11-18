@@ -42,47 +42,6 @@ const GetCoronaAmpelStatusIntentHandler = {
             .speak(obj)
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
-        
-        
-        /**
-        axios.get('https://jsonplaceholder.typicode.com/todos/1')
-            .then(res => {
-                let obj = res.data;
-                return obj;
-            })
-            .then(obj => {
-                let speakOutput = obj.title;
-                return speakOutput;
-            })
-            .then(speakOutput => {
-            return handlerInput.responseBuilder
-                .speak(speakOutput)
-                //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-                .getResponse();
-            }) **/
-        
-        /**
-        axios.get('https://jsonplaceholder.typicode.com/todos/1')
-            .then(res => {
-                return JSON.parse(res)
-            })
-            .then(alertLevel => {
-                speakOutput = "Corona-Warnstufe" + alertLevel.title + "für Postleitzahl " + plzString;
-
-                return handlerInput.responseBuilder
-                    .speak(speakOutput)
-                    //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-                    .getResponse();
-            })
-            .catch(error => {
-                return handlerInput.responseBuilder
-                    .speak("Well, that didn't work... The error: " + error)
-                    //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-                    .getResponse();
-            })
-            
-            **/
-
     }
 };
 
