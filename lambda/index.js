@@ -43,7 +43,9 @@ const GetCoronaAmpelStatusIntentHandler = {
                 let obj = res.data;
                 return obj;
             })
-            .then(obj => console.log(obj));
+            .then(obj => {
+                speakOutput = obj.title;
+            });
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
