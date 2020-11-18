@@ -41,11 +41,12 @@ const GetCoronaAmpelStatusIntentHandler = {
             .then(res => { return JSON.parse(res.data) })
             .then(obj => {
                 speakOutput = res.title;
-                return handlerInput.responseBuilder
-                    .speak(speakOutput)
-                    //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-                    .getResponse();
             })
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
 
 
 
