@@ -37,6 +37,7 @@ const GetCoronaAmpelStatusIntentHandler = {
 
         let speakOutput = "test";
 
+/**
         axios.get('https://jsonplaceholder.typicode.com/todos/1')
             .then(res => {
                 return "4"
@@ -55,6 +56,12 @@ const GetCoronaAmpelStatusIntentHandler = {
                     //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
                     .getResponse();
             })
+**/
+    return handlerInput.responseBuilder
+        .speak("Well, that didn't work...")
+        //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+        .getResponse();
+
     }
 };
 
