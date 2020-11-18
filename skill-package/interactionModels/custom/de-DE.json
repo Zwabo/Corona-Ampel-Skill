@@ -1,0 +1,98 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "corona ampel",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "HelloWorldIntent",
+          "slots": [],
+          "samples": [
+            "hallo",
+            "wie geht\u0027s dir",
+            "sag hallo welt",
+            "sag hallo"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "GetCoronaAmpelStatusIntent",
+          "slots": [
+            {
+              "name": "PLZ",
+              "type": "AMAZON.FOUR_DIGIT_NUMBER",
+              "samples": [
+                "Für {PLZ}",
+                "{PLZ}"
+              ]
+            }
+          ],
+          "samples": [
+            "Zeig mir den Corona Status für {PLZ}",
+            "Zeig mir den aktuellen Corona Status",
+            "Sag mir den aktuellen Corona Ampel Status",
+            "Corona Ampel Status",
+            "Zeige mir die aktuelle Corona-Ampel"
+          ]
+        }
+      ],
+      "types": [],
+      "modelConfiguration": {
+        "fallbackIntentSensitivity": {
+          "level": "LOW"
+        }
+      }
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "GetCoronaAmpelStatusIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "PLZ",
+              "type": "AMAZON.FOUR_DIGIT_NUMBER",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1081718378104.1516105670693"
+              }
+            }
+          ]
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.1081718378104.1516105670693",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Für welche Postleitzahl?"
+          }
+        ]
+      }
+    ]
+  },
+  "version": "3"
+}
