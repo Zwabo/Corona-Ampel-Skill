@@ -26,6 +26,7 @@ const GetCoronaAmpelStatusIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent';
     },
     handle(handlerInput) {
+        const url = "http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status";
         let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value.toString();
         let plzArr = [];
 
