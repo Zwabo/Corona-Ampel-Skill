@@ -35,7 +35,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         }
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
 
-        const speakOutput = "";
+        let speakOutput = "";
 
         axios.get('http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status/' + plz)
             .then(res => {
