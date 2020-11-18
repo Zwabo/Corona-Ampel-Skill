@@ -36,6 +36,12 @@ const GetCoronaAmpelStatusIntentHandler = {
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
 
         let speakOutput = "test";
+        
+        axios.get('https://jsonplaceholder.typicode.com/todos/1')
+            .then(res => {return JSON.parse(res.data);})
+            .then (obj => {speakOutput = res.title});
+            
+            
 
 /**
         axios.get('https://jsonplaceholder.typicode.com/todos/1')
