@@ -36,6 +36,13 @@ const GetCoronaAmpelStatusIntentHandler = {
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
 
         let speakOutput = "test";
+        
+                        return handlerInput.responseBuilder
+                    .speak("Well, that didn't work... The error: " + error)
+                    //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+                    .getResponse();
+        
+        /**
         axios.get('https://jsonplaceholder.typicode.com/todos/1')
             .then(res => {
                 return JSON.parse(res)
@@ -54,6 +61,8 @@ const GetCoronaAmpelStatusIntentHandler = {
                     //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
                     .getResponse();
             })
+            
+            **/
 
     }
 };
