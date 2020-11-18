@@ -4,6 +4,7 @@
  * session persistence, api calls, and more.
  * */
 const Alexa = require('ask-sdk-core');
+const axios = require('axios');
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -27,13 +28,19 @@ const GetCoronaAmpelStatusIntentHandler = {
     handle(handlerInput) {
         let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value.toString();
         let plzArr = [];
-        
+
         for (let i = 0, len = plz.length; i < len; i += 1) {
             plzArr.push(+plz.charAt(i));
         }
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
-        
-        const speakOutput = "Die Postleitzahl ist " + plzString;
+
+        axios.get('http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status/' + plz)
+            .then(res => {
+                return res.Warnstufe;
+            })
+            .then(alertLevel => {
+                const speakOutput = "Corona-Warnstufe" + alertLevel + "für Postleitzahl " + plzString;
+            })
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
