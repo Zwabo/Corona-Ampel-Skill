@@ -38,7 +38,15 @@ const GetCoronaAmpelStatusIntentHandler = {
 
         let result = await axios.get('http://node-express-env.eba-4pmvzrvc.eu-central-1.elasticbeanstalk.com/status/' + plz);
 
-        let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
+
+        const attributesManager = handlerInput.attributesManager;
+        const attributes = await attributesManager.getPersistentAttributes() || {};
+        console.log('attributes is: ', attributes);
+
+        const counter = attributes.hasOwnProperty('counter') ? attributes.counter : 0;
+
+
+        let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe + `Hi there, Hello World! Your counter is ${counter}`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -53,7 +61,13 @@ const HelloWorldIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'Hello World!';
+        const attributesManager = handlerInput.attributesManager;
+        let attributes = { "counter": 10 };
+
+        attributesManager.setPersistentAttributes(attributes);
+        await attributesManager.savePersistentAttributes();
+
+        let speakOutput = `Hi there, Hello World! Your saved counter is ${attributes.counter}`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
