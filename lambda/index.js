@@ -60,7 +60,7 @@ const HelloWorldIntentHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
     },
-    handle(handlerInput) {
+    async handle(handlerInput) {
         const attributesManager = handlerInput.attributesManager;
         let attributes = { "counter": 10 };
 
