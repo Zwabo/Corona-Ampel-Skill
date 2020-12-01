@@ -61,7 +61,7 @@ const SetDefaultPLZIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetDefaultPLZIntent';
     },
     async handle(handlerInput) {
-        let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value.toString();
+        let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
         const attributesManager = handlerInput.attributesManager;
         let attributes = { "default_plz": plz };
 
