@@ -73,8 +73,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         
         //Setting PLZ either to default_plz stored in the db or the intent plz
         let plz = 0;
-        if(attributes.hasOwnProperty('default_plz')) plz = attributes.default_plz.toString();
-        else if(intentPlz !== null) plz = intentPlz.toString();
+        if(intentPlz !== null) plz = intentPlz.toString();
         
         //Creating array of single PLZ-digits
         let plzArr = [];
