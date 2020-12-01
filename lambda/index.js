@@ -37,7 +37,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
     const attributes = await attributesManager.getPersistentAttributes() || {};
     
     if(!plz.value){
-        plz.value === attributes.default_plz;
+        plz.value === 4020; //attributes.default_plz;
     }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
