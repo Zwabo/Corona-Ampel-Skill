@@ -36,7 +36,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
     
-    if(!plz.value && !attributes.default_plz){
+    if(!plz.value && attributes.default_plz !== null){
         plz.value === attributes.default_plz.toString();
     }
     return handlerInput.responseBuilder
