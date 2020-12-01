@@ -28,8 +28,17 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
         && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
         && handlerInput.requestEnvelope.request.dialogState === 'STARTED';
   },
-  handle(handlerInput) {
+  async handle(handlerInput) {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
+    
+    let plz = currentIntent.slots.PLZ;
+    
+    const attributesManager = handlerInput.attributesManager;
+    const attributes = await attributesManager.getPersistentAttributes() || {};
+    
+    if(!plz.value){
+        plz.value === attributes.default_plz.toString();
+    }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
       .getResponse();
