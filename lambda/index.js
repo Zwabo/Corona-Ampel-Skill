@@ -43,7 +43,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         const attributes = await attributesManager.getPersistentAttributes() || {};
         console.log('attributes is: ', attributes);
 
-        const defaultPlz = attributes.hasOwnProperty('default_plz') ? attributes.counter : 0;
+        const defaultPlz = attributes.hasOwnProperty('default_plz') ? attributes.default_plz : 0;
 
 
         let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe + `. Deine Standard-Postleitzahl ist: ${defaultPlz}`;
