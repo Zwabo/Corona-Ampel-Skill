@@ -21,7 +21,7 @@ const LaunchRequestHandler = {
             .getResponse();
     }
 };
-
+/**
 const StartedGetCoronaAmpelStatusIntentHandler = {
   canHandle(handlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -43,7 +43,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
       .addDelegateDirective(currentIntent)
       .getResponse();
   },
-};
+}; **/
 
 const InProgressGetCoronaAmpelStatusIntentHandler = {
   canHandle(handlerInput) {
@@ -249,7 +249,7 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        StartedGetCoronaAmpelStatusIntentHandler,
+        //StartedGetCoronaAmpelStatusIntentHandler,
         InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
         SetDefaultPLZIntentHandler,
