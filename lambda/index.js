@@ -43,15 +43,30 @@ const GetCoronaAmpelStatusIntentHandler = {
         const attributes = await attributesManager.getPersistentAttributes() || {};
         console.log('attributes is: ', attributes);
 
-        const counter = attributes.hasOwnProperty('counter') ? attributes.counter : 0;
+        const defaultPlz = attributes.hasOwnProperty('default_plz') ? attributes.counter : 0;
 
 
-        let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe + `Hi there, Hello World! Your counter is ${counter}`;
+        let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe + `. Deine Standard-Postleitzahl ist: ${defaultPlz}`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
+    }
+};
+
+const SetDefaultPLZIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetDefaultPLZIntent';
+    },
+    async handle(handlerInput) {
+        let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value.toString();
+        const attributesManager = handlerInput.attributesManager;
+        let attributes = { "default_plz": plz };
+
+        attributesManager.setPersistentAttributes(attributes);
+        await attributesManager.savePersistentAttributes();
     }
 };
 
@@ -187,6 +202,7 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         GetCoronaAmpelStatusIntentHandler,
+        SetDefaultPLZIntentHandler,
         HelloWorldIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
