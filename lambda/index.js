@@ -28,25 +28,29 @@ const GetCoronaAmpelStatusIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent';
     },
     async handle(handlerInput) {
-        let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value.toString();
+        let intentPlz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
+        
+        const attributesManager = handlerInput.attributesManager;
+        const attributes = await attributesManager.getPersistentAttributes() || {};
+        
+        //Setting PLZ either to default_plz stored in the db or the intent plz
+        let plz = 0;
+        if(attributes.hasOwnProperty('default_plz')) plz = attributes.default_plz.toString();
+        else if(intentPlz) plz = intentPlz.toString();
+        
+        //Creating array of single PLZ-digits
         let plzArr = [];
-
         for (let i = 0, len = plz.length; i < len; i += 1) {
             plzArr.push(+plz.charAt(i));
         }
         let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
 
-        let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz);
-
-
-        const attributesManager = handlerInput.attributesManager;
-        const attributes = await attributesManager.getPersistentAttributes() || {};
-        console.log('attributes is: ', attributes);
-
-        const defaultPlz = attributes.hasOwnProperty('default_plz') ? attributes.default_plz : 0;
-
-
-        let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe + `. Deine Standard-Postleitzahl ist: ${defaultPlz}`;
+        //Setting the speech output
+        let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
+        if(plz !== 0){
+            let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz);
+            let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
+        }
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
