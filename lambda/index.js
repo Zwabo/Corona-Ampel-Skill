@@ -47,9 +47,10 @@ const GetCoronaAmpelStatusIntentHandler = {
 
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
+        speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe ";
         if(plz !== 0){
             let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz);
-            let speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
+            speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
         }
 
         return handlerInput.responseBuilder
