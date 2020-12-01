@@ -22,10 +22,25 @@ const LaunchRequestHandler = {
     }
 };
 
+const InProgressGetCoronaAmpelStatusIntentHandler = {
+  canHandle(handlerInput) {
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+        && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
+        && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS';
+  },
+  handle(handlerInput) {
+    const currentIntent = handlerInput.requestEnvelope.request.intent;
+    return handlerInput.responseBuilder
+      .addDelegateDirective(currentIntent)
+      .getResponse();
+  },
+};
+
 const GetCoronaAmpelStatusIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
+            && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
     },
     async handle(handlerInput) {
         let intentPlz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
@@ -47,7 +62,6 @@ const GetCoronaAmpelStatusIntentHandler = {
 
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
-        speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe ";
         if(plz !== 0){
             let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz);
             speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
@@ -213,6 +227,7 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
+        InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
         SetDefaultPLZIntentHandler,
         HelloWorldIntentHandler,
