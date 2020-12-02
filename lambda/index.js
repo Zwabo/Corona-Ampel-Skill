@@ -8,6 +8,17 @@ const AWS = require('aws-sdk');
 const ddbAdapter = require('ask-sdk-dynamodb-persistence-adapter');
 const axios = require('axios');
 
+function setQuestion(handlerInput, questionAsked) {
+  const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+  sessionAttributes.questionAsked = questionAsked;
+  handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+}
+function setSessionWarnstufe(handlerInput, warnstufe) {
+  const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+  sessionAttributes.warnstufe = warnstufe;
+  handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+}
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
@@ -85,16 +96,33 @@ const GetCoronaAmpelStatusIntentHandler = {
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
         if(plz !== 0){
-            let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz);
+            let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz + '. ');
             speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
+            setSessionWarnstufe(handlerInput, result.data.Warnstufe); //Set Warnstufe as session attribute
         }
+        setQuestion(handlerInput, 'WarnstufenInfo'); //Set Question
 
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .speak(speakOutput + 'Willst du Infos zu deiner Corona-Warnstufe?')
+            .reprompt('Benötigst du Infos zur Corona Warnstufe?')
             .getResponse();
     }
 };
+
+const YesIntentWarnstufenInfoHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.YesIntent'
+            && handlerInput.attributesManager.getSessionAttributes().questionAsked === 'WarnstufenInfo';
+    },
+    handle(handlerInput) {
+        setQuestion(handlerInput, 'WarnstufenInfo'); //Reset Question
+        return handlerInput.responseBuilder
+            .speak('Warngestuft')
+            .reprompt('Benötigst du Infos zur Corona Warnstufe?')
+            .getResponse();
+    }
+}
 
 const SetDefaultPLZIntentHandler = {
     canHandle(handlerInput) {
@@ -252,6 +280,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         StartedGetCoronaAmpelStatusIntentHandler,
         InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
+        YesIntentWarnstufenInfoHandler,
         SetDefaultPLZIntentHandler,
         HelloWorldIntentHandler,
         HelpIntentHandler,
