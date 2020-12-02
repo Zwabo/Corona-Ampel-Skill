@@ -23,7 +23,7 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
 async function getDefaultPlz(handlerInput){
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
-    return attributes;
+    return attributes.default_plz;
 }
 
 const LaunchRequestHandler = {
