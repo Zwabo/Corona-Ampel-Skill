@@ -20,7 +20,7 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
   handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
 
-async function getAttributes(handlerInput){
+async function getDefaultPlz(handlerInput){
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
     return attributes;
@@ -33,7 +33,7 @@ const LaunchRequestHandler = {
     async handle(handlerInput) {
         let speakOutput = 'Hallo! Um den aktuellen Corona-Ampel Status abzurufen, sag einfach: "Zeig mir den aktuellen Corona Status".';
         
-       const attr = await getAttributes();
+       const attr = await getDefaultPlz(handlerInput);
         if(!attr){
             speakOutput += 'Willst du eine Standard-Postleitzahl setzen, damit ich immer weiß für welchen Ort ich den Ampel-Status abrufen soll?';
         }
@@ -54,7 +54,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
   async handle(handlerInput) {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
     let plz = currentIntent.slots.PLZ;
-    const defaultPlz = await getDefaultPlz();
+    const defaultPlz = await getDefaultPlz(handlerInput);
     
     if(!plz.value){
         plz.value = defaultPlz;
