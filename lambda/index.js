@@ -124,12 +124,16 @@ const YesIntentWarnstufenInfoHandler = {
         switch(warnstufe){
             case 1:
                 speakOutput = 'Ampelfarbe grün: Es herrscht geringes Risko. Es gibt nur einzelne Fälle und isolierte Cluster.';
+                break;
             case 2:
                 speakOutput = 'Ampelfarbe gelb: Es herrscht mittleres Risko. Es gibt nur moderate Fälle, die primär in Clustern auftreten.';
+                break;
             case 3:
                 speakOutput = 'Ampelfarbe orange: Es herrscht hohes Risko. Es liegt eine Häufung von Fällen vor, die nicht mehr überwiegend Clustern zuordenbar sind.';
+                break;
             case 4:
                 speakOutput = 'Ampelfarbe rot: Es herrscht sehr hohes Risko. Ausbrüche sind unkontrolliert, die Verbreitung ist großflächig.';
+                break;
         }
         
         return handlerInput.responseBuilder
