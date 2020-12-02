@@ -13,18 +13,30 @@ function setQuestion(handlerInput, questionAsked) {
   sessionAttributes.questionAsked = questionAsked;
   handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
+
 function setSessionWarnstufe(handlerInput, warnstufe) {
   const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
   sessionAttributes.warnstufe = warnstufe;
   handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
 
+async function getDefaultPlz(handlerInput){
+    const attributesManager = handlerInput.attributesManager;
+    const attributes = await attributesManager.getPersistentAttributes() || {};
+    return attributes.default_plz;
+}
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
-    handle(handlerInput) {
-        const speakOutput = 'Hallo! Um den aktuellen Corona-Ampel Status abzurufen, sag einfach: "Zeig mir den aktuellen Corona Status"';
+    async handle(handlerInput) {
+        let speakOutput = 'Hallo! Um den aktuellen Corona-Ampel Status abzurufen, sag einfach: "Zeig mir den aktuellen Corona Status".';
+        
+        const defaultPlz = await getDefaultPlz();
+        if(!defaultPlz){
+            speakOutput += 'Willst du eine Standard-Postleitzahl setzen, damit ich immer weiß für welchen Ort ich den Ampel-Status abrufen soll?';
+        }
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -41,14 +53,11 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
   },
   async handle(handlerInput) {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
-    
     let plz = currentIntent.slots.PLZ;
-    
-    const attributesManager = handlerInput.attributesManager;
-    const attributes = await attributesManager.getPersistentAttributes() || {};
+    const defaultPlz = await getDefaultPlz();
     
     if(!plz.value){
-        plz.value = attributes.default_plz;
+        plz.value = defaultPlz;
     }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
@@ -79,9 +88,6 @@ const GetCoronaAmpelStatusIntentHandler = {
     async handle(handlerInput) {
         let intentPlz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
         
-        const attributesManager = handlerInput.attributesManager;
-        const attributes = await attributesManager.getPersistentAttributes() || {};
-        
         //Setting PLZ either to default_plz stored in the db or the intent plz
         let plz = 0;
         if(intentPlz !== null) plz = intentPlz.toString();
@@ -91,7 +97,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         for (let i = 0, len = plz.length; i < len; i += 1) {
             plzArr.push(+plz.charAt(i));
         }
-        let plzString = plzArr[0] + ", " + plzArr[1] + ", " + plzArr[2] + ", " + plzArr[3];
+        let plzString = plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3];
 
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
@@ -123,16 +129,16 @@ const YesIntentWarnstufenInfoHandler = {
         let speakOutput = 'Warnstufe' + warnstufe;
         switch(Number(warnstufe)){
             case 1:
-                speakOutput = 'Ampelfarbe grün: Es herrscht geringes Risko. Es gibt nur einzelne Fälle und isolierte Cluster.';
+                speakOutput = 'Ampelfarbe grün: Es herrscht geringes Risiko. Es gibt nur einzelne Fälle und isolierte Cluster.';
                 break;
             case 2:
-                speakOutput = 'Ampelfarbe gelb: Es herrscht mittleres Risko. Es gibt nur moderate Fälle, die primär in Clustern auftreten.';
+                speakOutput = 'Ampelfarbe gelb: Es herrscht mittleres Risiko. Es gibt nur moderate Fälle, die primär in Clustern auftreten.';
                 break;
             case 3:
-                speakOutput = 'Ampelfarbe orange: Es herrscht hohes Risko. Es liegt eine Häufung von Fällen vor, die nicht mehr überwiegend Clustern zuordenbar sind.';
+                speakOutput = 'Ampelfarbe orange: Es herrscht hohes Risiko. Es liegt eine Häufung von Fällen vor, die nicht mehr überwiegend Clustern zuordenbar sind.';
                 break;
             case 4:
-                speakOutput = 'Ampelfarbe rot: Es herrscht sehr hohes Risko. Ausbrüche sind unkontrolliert, die Verbreitung ist großflächig.';
+                speakOutput = 'Ampelfarbe rot: Es herrscht sehr hohes Risiko. Ausbrüche sind unkontrolliert, die Verbreitung ist großflächig.';
                 break;
         }
         
