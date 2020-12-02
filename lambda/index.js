@@ -120,7 +120,7 @@ const YesIntentWarnstufenInfoHandler = {
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
         const warnstufe = sessionAttributes.warnstufe;
         
-        let speakOutput = 'Warnstufe';
+        let speakOutput = 'Warnstufe' + warnstufe;
         switch(warnstufe){
             case 1:
                 speakOutput = 'Ampelfarbe grün: Es herrscht geringes Risko. Es gibt nur einzelne Fälle und isolierte Cluster.';
