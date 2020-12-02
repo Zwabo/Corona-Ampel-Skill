@@ -117,9 +117,23 @@ const YesIntentWarnstufenInfoHandler = {
     },
     handle(handlerInput) {
         setQuestion(handlerInput, 'WarnstufenInfo'); //Reset Question
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        const warnstufe = sessionAttributes.warnstufe;
+        
+        let speakOutput = 'Warnstufe';
+        switch(warnstufe){
+            case 1:
+                speakOutput = 'Ampelfarbe grün: Es herrscht geringes Risko. Es gibt nur einzelne Fälle und isolierte Cluster.';
+            case 2:
+                speakOutput = 'Ampelfarbe gelb: Es herrscht mittleres Risko. Es gibt nur moderate Fälle, die primär in Clustern auftreten.';
+            case 3:
+                speakOutput = 'Ampelfarbe orange: Es herrscht hohes Risko. Es liegt eine Häufung von Fällen vor, die nicht mehr überwiegend Clustern zuordenbar sind.';
+            case 4:
+                speakOutput = 'Ampelfarbe rot: Es herrscht sehr hohes Risko. Ausbrüche sind unkontrolliert, die Verbreitung ist großflächig.';
+        }
+        
         return handlerInput.responseBuilder
-            .speak('Warngestuft')
-            .reprompt('Benötigst du Infos zur Corona Warnstufe?')
+            .speak(speakOutput)
             .getResponse();
     }
 }
