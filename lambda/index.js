@@ -35,7 +35,7 @@ const LaunchRequestHandler = {
         
         const defaultPlz = await getDefaultPlz();
         if(!defaultPlz){
-            speakOutput += 'Willst du eine Standard-Postleitzahl setzen, damit ich immer weiß für welchen Ort ich den Ampel-Status abrufen soll?';
+            await speakOutput += 'Willst du eine Standard-Postleitzahl setzen, damit ich immer weiß für welchen Ort ich den Ampel-Status abrufen soll?';
         }
 
         return handlerInput.responseBuilder
