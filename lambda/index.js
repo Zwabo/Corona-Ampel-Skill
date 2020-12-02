@@ -96,9 +96,9 @@ const GetCoronaAmpelStatusIntentHandler = {
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
         if(plz !== 0){
-            let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz + '. ');
-            speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe;
-            //setSessionWarnstufe(handlerInput, result.data.Warnstufe); //Set Warnstufe as session attribute
+            let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz);
+            speakOutput = "Für die Postleitzahl " + plzString + " gilt Corona-Warnstufe " + result.data.Warnstufe + '. ';
+            setSessionWarnstufe(handlerInput, result.data.Warnstufe); //Set Warnstufe as session attribute
         }
         setQuestion(handlerInput, 'WarnstufenInfo'); //Set Question
 
