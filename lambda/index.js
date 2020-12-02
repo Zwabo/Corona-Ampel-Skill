@@ -33,10 +33,10 @@ const LaunchRequestHandler = {
     async handle(handlerInput) {
         let speakOutput = 'Hallo! Um den aktuellen Corona-Ampel Status abzurufen, sag einfach: "Zeig mir den aktuellen Corona Status".';
         
-        const defaultPlz = await getDefaultPlz();
+       /** const defaultPlz = await getDefaultPlz();
         if(!defaultPlz){
-            await speakOutput += 'Willst du eine Standard-Postleitzahl setzen, damit ich immer weiß für welchen Ort ich den Ampel-Status abrufen soll?';
-        }
+            speakOutput += 'Willst du eine Standard-Postleitzahl setzen, damit ich immer weiß für welchen Ort ich den Ampel-Status abrufen soll?';
+        }**/
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
