@@ -154,6 +154,21 @@ const YesIntentWarnstufenInfoHandler = {
     }
 }
 
+const NoIntentWarnstufenInfoHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NoIntent'
+            && handlerInput.attributesManager.getSessionAttributes().questionAsked === 'WarnstufenInfo';
+    },
+    handle(handlerInput) {
+        setQuestion(handlerInput, 'WarnstufenInfo'); //Reset Question
+        const speakOutput = "Ok."
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+}
+
 const SetDefaultPLZIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
