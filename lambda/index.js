@@ -309,6 +309,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
         YesIntentWarnstufenInfoHandler,
+        NoIntentWarnstufenInfoHandler,
         SetDefaultPLZIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
