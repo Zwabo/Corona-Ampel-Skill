@@ -175,6 +175,8 @@ const SetDefaultPLZIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetDefaultPLZIntent';
     },
     async handle(handlerInput) {
+        
+        //Get PLZ
         let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
         if(plz % 1 !== 0){
             plz = plz * 100;
