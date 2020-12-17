@@ -243,7 +243,7 @@ const SetDefaultPLZsIntentHandler = {
         let entry = {"name": name, "plz": plz};
         
         const attributesManager = handlerInput.attributesManager;
-        let attributes = { "default_plzs": entry };
+        let attributes = { "default_plzs": [entry] };
 
         attributesManager.setPersistentAttributes(attributes);
         await attributesManager.savePersistentAttributes();
