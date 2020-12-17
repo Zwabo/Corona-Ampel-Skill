@@ -247,7 +247,7 @@ const SetDefaultPLZsIntentHandler = {
             Math.floor(plz);
         }
         let name = slots.Name.value;
-        let entry = {"name": name, "plz": plz};
+        let entry = {name: name, plz: plz};
         
         console.log("vorher");
         await addDefaultPlz(handlerInput, entry);
