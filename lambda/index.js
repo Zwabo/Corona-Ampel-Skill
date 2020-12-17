@@ -38,6 +38,8 @@ async function addDefaultPlz(handlerInput, entry){
     let defaultPlzs = attributes.default_plzs;
     defaultPlzs.append(entry);
     
+    console.log(attributes);
+    
     attributesManager.setPersistentAttributes(attributes);
     await attributesManager.savePersistentAttributes();
 }
