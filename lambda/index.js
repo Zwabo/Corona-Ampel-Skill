@@ -272,6 +272,8 @@ const SetDefaultPLZsIntentHandler = {
         **/
         
         let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
+        
+        /**
         if(getDefaultPlzs().length > 0){
             await addDefaultPlz(handlerInput, entry);
             
@@ -284,6 +286,7 @@ const SetDefaultPLZsIntentHandler = {
             })
             .getResponse();
         }
+        **/
         await addDefaultPlz(handlerInput, entry);
         
         return handlerInput.responseBuilder
