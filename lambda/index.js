@@ -49,6 +49,20 @@ async function addDefaultPlz(handlerInput, entry){
     await attributesManager.savePersistentAttributes();
 }
 
+async function overwriteDefaultPlz(handlerInput, entry, oldEntryName){
+    const attributesManager = handlerInput.attributesManager;
+    const attributes = await attributesManager.getPersistentAttributes() || {};
+    
+    let defaultPlzs = attributes.default_plzs;
+    
+    //Find entry to be overwritten and put new entry in its index
+    let i = defaultPlzs.findIndex(entry => entry.name === oldEntryName);
+    defaultPlzs[i] = entry;
+    
+    attributesManager.setPersistentAttributes(attributes);
+    await attributesManager.savePersistentAttributes();
+}
+
 function getWarnstufenColor(warnstufe){
     let warnstufenArr = ["grün", "gelb", "orange", "rot"];
     return warnstufenArr[warnstufe - 1];
