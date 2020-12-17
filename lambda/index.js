@@ -169,6 +169,30 @@ const NoIntentWarnstufenInfoHandler = {
     }
 }
 
+const SetDefaultPLZsConfirmNameIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetDefaultPLZsIntent'
+            && Alexa.getSlot(handlerInput.requestEnvelope, 'Name').confirmationStatus === 'NONE';
+    },
+    async handle(handlerInput) {
+        
+        //Get PLZ
+        let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
+        if(plz % 1 !== 0){
+            plz = plz * 100;
+            Math.floor(plz);
+        }
+        const speakOutput = `Die Postleitzahl lautet ${plz}. Ist das richtig?`;
+        
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .addConfirmSlotDirective('Name')
+            .getResponse();
+    }
+};
+
 const SetDefaultPLZsIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -312,6 +336,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         GetCoronaAmpelStatusIntentHandler,
         YesIntentWarnstufenInfoHandler,
         NoIntentWarnstufenInfoHandler,
+        SetDefaultPLZsConfirmNameIntentHandler,
         SetDefaultPLZsIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
