@@ -192,7 +192,8 @@ const SetDefaultPLZsConfirmNameIntentHandler = {
             plz = plz * 100;
             Math.floor(plz);
         }
-        const speakOutput = `Die Postleitzahl lautet ${stringifyPlz(plz)}. Ist das richtig?`;
+        let plzString = stringifyPlz(plz);
+        const speakOutput = `Die Postleitzahl lautet ${plzString}. Ist das richtig?`;
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
