@@ -296,11 +296,6 @@ const SetDefaultPLZsIntentHandler = {
             
             let speakOutput = ' Willst du einen bestehenden Eintrag überschreiben?'
             return handlerInput.responseBuilder
-                .addDelegateDirective({
-                    name: 'OrderIntent',
-                    confirmationStatus: 'NONE',
-                    slots: {}
-                 })
                 .speak(speakOutput)
                 .reprompt(speakOutput)
                 .getResponse();
@@ -327,6 +322,11 @@ const YesIntentOverwritePlzHandler = {
         const defaultPlz = handlerInput.attributesManager.getSessionAttributes().defaultPlz;
         let speakOutput = "Du willst einen bestehenden Eintrag überschreiben!" + defaultPlz.name + " " + defaultPlz.plz;
         return handlerInput.responseBuilder
+            .addDelegateDirective({
+                name: 'OverwriteDefaultPlzIntent',
+                confirmationStatus: 'NONE',
+                slots: {}
+            })
             .speak(speakOutput)
             .getResponse();
     }
@@ -341,6 +341,20 @@ const NoIntentOverwritePlzHandler = {
     handle(handlerInput) {
         setQuestion(handlerInput, ''); //Reset Question
         let speakOutput = "Du willst keinen bestehenden Eintrag überschreiben!"
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+}
+
+const OverwriteDefaultPlzIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent';
+    },
+    handle(handlerInput) {
+        setQuestion(handlerInput, ''); //Reset Question
+        let speakOutput = "Yo yo"
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
