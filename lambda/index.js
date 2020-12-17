@@ -480,6 +480,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         SetDefaultPLZsIntentHandler,
         YesIntentOverwritePlzHandler,
         NoIntentOverwritePlzHandler,
+        OverwriteDefaultPlzIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
