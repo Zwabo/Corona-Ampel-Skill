@@ -232,7 +232,7 @@ const SetDefaultPLZsIntentHandler = {
         attributesManager.setPersistentAttributes(attributes);
         await attributesManager.savePersistentAttributes();
         
-        let speakOutput = `Die gespeicherte Postleitzahl lautet: ${attributes.default_plz}. Der Name lautet: ${handlerInput.requestEnvelope.request.intent.slots.Name.value}`;
+        let speakOutput = `Die gespeicherte Postleitzahl lautet: ${attributes.default_plzs.plz}. Der Name lautet: ${attributes.default_plzs.name}`;
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
