@@ -271,9 +271,20 @@ const SetDefaultPLZsIntentHandler = {
         await attributesManager.savePersistentAttributes();
         **/
         
-        await addDefaultPlz(handlerInput, entry);
-        
         let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
+        if(getDefaultPlzs().length > 0){
+            await addDefaultPlz(handlerInput, entry);
+            
+            return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .addDelegateDirective({
+                name: 'GetCoronaAmpelStatusIntent',
+                confirmationStatus: 'NONE',
+                slots: {}
+            })
+            .getResponse();
+        }
+        await addDefaultPlz(handlerInput, entry);
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
