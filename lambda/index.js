@@ -20,10 +20,24 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
   handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
 
+async function updatePersistentAttributes(handlerInput, entry){
+    const attributesManager = handlerInput.attributesManager;
+    const attributes = await attributesManager.getPersistentAttributes() || {"default_plzs": []};
+    return attributes.default_plzs;
+}
+
 async function getDefaultPlzs(handlerInput){
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
     return attributes.default_plzs;
+}
+
+async function addDefaultPlz(handlerInput, entry){
+    const defaultPlzs = getDefaultPlzs(handlerInput);
+    defaultPlzs.append(entry);
+    
+    handlerInput.attributesManager.setPersistentAttributes(defaultPlzs);
+    await attributesManager.savePersistentAttributes();
 }
 
 function getWarnstufenColor(warnstufe){
@@ -224,10 +238,10 @@ const SetDefaultPLZsIntentHandler = {
             Math.floor(plz);
         }
         let name = slots.Name.value;
-        let entry = {name: name, plz: plz};
+        let entry = {"name": name, "plz": plz};
         
         const attributesManager = handlerInput.attributesManager;
-        let attributes = { "default_plzs": JSON.stringify(entry) };
+        let attributes = { "default_plzs": entry };
 
         attributesManager.setPersistentAttributes(attributes);
         await attributesManager.savePersistentAttributes();
