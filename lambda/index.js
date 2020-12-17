@@ -22,7 +22,7 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
 
 async function updatePersistentAttributes(handlerInput, entry){
     const attributesManager = handlerInput.attributesManager;
-    const attributes = await attributesManager.getPersistentAttributes() || {"default_plzs": [{"name": "test", "plz": "4113"}]};
+    const attributes = await attributesManager.getPersistentAttributes() || {"default_plzs": []};
     return attributes.default_plzs;
 }
 
@@ -34,16 +34,9 @@ async function getDefaultPlzs(handlerInput){
 
 async function addDefaultPlz(handlerInput, entry){
     const attributesManager = handlerInput.attributesManager;
-    let attributes = await attributesManager.getPersistentAttributes() || {};
-    console.log(attributes);
-    
-    if(attributes === {}){
-        attributes = {default_plzs: []};
-    }
+    const attributes = await attributesManager.getPersistentAttributes() || {"default_plzs": []};
     let defaultPlzs = attributes.default_plzs;
-    console.log(attributes);
     defaultPlzs.push(entry);
-    console.log("test");
     
     attributesManager.setPersistentAttributes(attributes);
     await attributesManager.savePersistentAttributes();
@@ -247,11 +240,13 @@ const SetDefaultPLZsIntentHandler = {
             Math.floor(plz);
         }
         let name = slots.Name.value;
-        let entry = {name: name, plz: plz};
+        let entry = {"name": name, "plz": plz};
         
-        console.log("vorher");
-        await addDefaultPlz(handlerInput, entry);
-        console.log("nachher");
+        const attributesManager = handlerInput.attributesManager;
+        let attributes = { "default_plzs": entry };
+
+        attributesManager.setPersistentAttributes(attributes);
+        await attributesManager.savePersistentAttributes();
         
         let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
         
