@@ -169,10 +169,10 @@ const NoIntentWarnstufenInfoHandler = {
     }
 }
 
-const SetDefaultPLZIntentHandler = {
+const SetDefaultPLZsIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetDefaultPLZIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetDefaultPLZsIntent';
     },
     async handle(handlerInput) {
         
@@ -312,7 +312,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         GetCoronaAmpelStatusIntentHandler,
         YesIntentWarnstufenInfoHandler,
         NoIntentWarnstufenInfoHandler,
-        SetDefaultPLZIntentHandler,
+        SetDefaultPLZsIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
