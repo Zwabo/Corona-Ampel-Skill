@@ -20,6 +20,24 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
   handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
 
+function setSingleSessionAttribute(handlerInput, content, type){
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    
+    switch(type){
+        case 'questionAsked':
+            sessionAttributes.questionAsked = content;
+            break;
+        case 'warnstufe':
+            sessionAttributes.warnstufe = content;
+            break;
+        case 'defaultPlz':
+            sessionAttributes.defaultPlz = content;
+            break;
+    }
+    
+    handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+}
+
 async function updatePersistentAttributes(handlerInput, entry){
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {"default_plzs": []};
@@ -274,6 +292,7 @@ const SetDefaultPLZsIntentHandler = {
         
         if(defaultPlzs.length > 0){
             setQuestion(handlerInput, 'OverwritePlz'); //Set session attribute question
+            setSingleSessionAttribute(handlerInput, entry, 'defaultPlz');
             
             let speakOutput = ' Willst du einen bestehenden Eintrag überschreiben?'
             return handlerInput.responseBuilder
@@ -299,7 +318,9 @@ const YesIntentOverwritePlzHandler = {
     },
     handle(handlerInput) {
         setQuestion(handlerInput, ''); //Reset Question
-        let speakOutput = "Du willst einen bestehenden Eintrag überschreiben!"
+        
+        const defaultPlz = handlerInput.attributesManager.getSessionAttributes().defaultPlz;
+        let speakOutput = "Du willst einen bestehenden Eintrag überschreiben!" + defaultPlz.name + " " + defaultPlz.plz;
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
