@@ -173,7 +173,7 @@ const SetDefaultPLZsConfirmNameIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetDefaultPLZsIntent'
-            && Alexa.getSlot(handlerInput.requestEnvelope, 'Name').confirmationStatus === 'NONE';
+            && Alexa.getSlot(handlerInput.requestEnvelope, 'PLZ').confirmationStatus === 'NONE';
     },
     async handle(handlerInput) {
         
@@ -188,7 +188,7 @@ const SetDefaultPLZsConfirmNameIntentHandler = {
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
-            .addConfirmSlotDirective('Name')
+            .addConfirmSlotDirective('PLZ')
             .getResponse();
     }
 };
