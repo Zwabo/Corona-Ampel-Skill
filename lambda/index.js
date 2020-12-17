@@ -298,7 +298,7 @@ const YesIntentOverwritePlzHandler = {
     },
     handle(handlerInput) {
         setQuestion(handlerInput, ''); //Reset Question
-        let speakOutput = "Du willst keinen bestehenden Eintrag überschreiben!"
+        let speakOutput = "Du willst einen bestehenden Eintrag überschreiben!"
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
@@ -313,7 +313,7 @@ const NoIntentOverwritePlzHandler = {
     },
     handle(handlerInput) {
         setQuestion(handlerInput, ''); //Reset Question
-        let speakOutput = "Du willst einen bestehenden Eintrag überschreiben!"
+        let speakOutput = "Du willst keinen bestehenden Eintrag überschreiben!"
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
