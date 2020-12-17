@@ -20,10 +20,10 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
   handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
 
-async function getDefaultPlz(handlerInput){
+async function getDefaultPlzs(handlerInput){
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
-    return attributes.default_plz;
+    return attributes.default_plzs;
 }
 
 function getWarnstufenColor(warnstufe){
@@ -48,7 +48,7 @@ const LaunchRequestHandler = {
     async handle(handlerInput) {
         let speakOutput = 'Hallo! Um den aktuellen Corona-Ampel Status abzurufen, sag einfach: "Zeig mir den aktuellen Corona Status".';
         
-       const attr = await getDefaultPlz(handlerInput);
+       const attr = await getDefaultPlzs(handlerInput);
         if(!attr){
             speakOutput += 'Willst du eine Standard-Postleitzahl setzen, damit ich immer weiß für welchen Ort ich den Ampel-Status abrufen soll?';
         }
@@ -76,7 +76,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
     }
     
     if(!plz.value){
-        const defaultPlz = await getDefaultPlz(handlerInput);
+        const defaultPlz = await getDefaultPlzs(handlerInput);
         plz.value = defaultPlz;
     }
     return handlerInput.responseBuilder
@@ -217,13 +217,17 @@ const SetDefaultPLZsIntentHandler = {
     async handle(handlerInput) {
         
         //Get PLZ
-        let plz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
+        let slots = handlerInput.requestEnvelope.request.intent.slots;
+        let plz = slots.PLZ.value;
         if(plz % 1 !== 0){
             plz = plz * 100;
             Math.floor(plz);
         }
+        let name = slots.Name.value;
+        let entry = {name: name, plz: plz};
+        
         const attributesManager = handlerInput.attributesManager;
-        let attributes = { "default_plz": plz };
+        let attributes = { "default_plzs": JSON.stringify(entry) };
 
         attributesManager.setPersistentAttributes(attributes);
         await attributesManager.savePersistentAttributes();
