@@ -36,7 +36,8 @@ function stringifyPlz(plz){
         for (let i = 0, len = plz.length; i < len; i += 1) {
             plzArr.push(+plz.charAt(i));
         }
-        return plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3];
+        let plzString = plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3];
+        return plzString;
 }
 
 const LaunchRequestHandler = {
