@@ -68,9 +68,14 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
   async handle(handlerInput) {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
     let plz = currentIntent.slots.PLZ;
-    const defaultPlz = await getDefaultPlz(handlerInput);
+    
+    if(plz % 1 !== 0){
+        plz = plz * 100;
+        Math.floor(plz);
+    }
     
     if(!plz.value){
+        const defaultPlz = await getDefaultPlz(handlerInput);
         plz.value = defaultPlz;
     }
     return handlerInput.responseBuilder
