@@ -32,11 +32,12 @@ function getWarnstufenColor(warnstufe){
 }
 
 function stringifyPlz(plz){
+        //Creating array of single PLZ-digits
         let plzArr = [];
         for (let i = 0, len = plz.length; i < len; i += 1) {
             plzArr.push(+plz.charAt(i));
         }
-        let plzString = plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3];
+        let plzString = plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3]; //Seperate single plz digits
         return plzString;
 }
 
