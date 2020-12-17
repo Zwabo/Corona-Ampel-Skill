@@ -273,7 +273,9 @@ const SetDefaultPLZsIntentHandler = {
         
         let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
         
-        if(await getDefaultPlzs(handlerInput).length > 0){
+        let defaultPlzs = await getDefaultPlzs(handlerInput);
+        
+        if(defaultPlzs.length > 0){
             let questionOutput = ' Willst du einen bestehenden Eintrag überschreiben?'
             setQuestion(handlerInput, 'OverwritePlz'); //Set session attribute question
             
