@@ -296,9 +296,14 @@ const SetDefaultPLZsIntentHandler = {
             
             let speakOutput = ' Willst du einen bestehenden Eintrag überschreiben?'
             return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            .getResponse();
+                .addDelegateDirective({
+                    name: 'OrderIntent',
+                    confirmationStatus: 'NONE',
+                    slots: {}
+                 })
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
         
         await addDefaultPlz(handlerInput, entry);
