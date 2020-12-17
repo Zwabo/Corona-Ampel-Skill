@@ -31,6 +31,14 @@ function getWarnstufenColor(warnstufe){
     return warnstufenArr[warnstufe - 1];
 }
 
+function stringifyPlz(plz){
+        let plzArr = [];
+        for (let i = 0, len = plz.length; i < len; i += 1) {
+            plzArr.push(+plz.charAt(i));
+        }
+        return plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3];
+}
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
@@ -102,7 +110,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         for (let i = 0, len = plz.length; i < len; i += 1) {
             plzArr.push(+plz.charAt(i));
         }
-        let plzString = plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3];
+        let plzString = stringifyPlz(plz); //Seperate single plz digits
 
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
@@ -183,7 +191,7 @@ const SetDefaultPLZsConfirmNameIntentHandler = {
             plz = plz * 100;
             Math.floor(plz);
         }
-        const speakOutput = `Die Postleitzahl lautet ${plz}. Ist das richtig?`;
+        const speakOutput = `Die Postleitzahl lautet ${stringifyPlz(plz)}. Ist das richtig?`;
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
