@@ -69,9 +69,9 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
     let plz = currentIntent.slots.PLZ;
     
-    if(plz % 1 !== 0){
-        plz = plz * 100;
-        Math.floor(plz);
+    if(plz.value % 1 !== 0){
+        plz.value = plz.value * 100;
+        Math.floor(plz.value);
     }
     
     if(!plz.value){
