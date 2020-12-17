@@ -180,7 +180,7 @@ const YesIntentWarnstufenInfoHandler = {
             && handlerInput.attributesManager.getSessionAttributes().questionAsked === 'WarnstufenInfo';
     },
     handle(handlerInput) {
-        setQuestion(handlerInput, 'WarnstufenInfo'); //Reset Question
+        setQuestion(handlerInput, ''); //Reset Question
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
         const warnstufe = sessionAttributes.warnstufe;
         
@@ -274,25 +274,50 @@ const SetDefaultPLZsIntentHandler = {
         let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
         
         if(getDefaultPlzs(handlerInput).length > 0){
-            await addDefaultPlz(handlerInput, entry);
-            
+            let questionOutput = ' Willst du einen bestehenden Eintrag überschreiben?'
+            setQuestion(handlerInput, 'OverwritePlz'); //Set session attribute question
             return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .addDelegateDirective({
-                name: 'GetCoronaAmpelStatusIntent',
-                confirmationStatus: 'NONE',
-                slots: {}
-            })
+            .speak(speakOutput + questionOutput)
+            .reprompt(questionOutput)
             .getResponse();
         }
         await addDefaultPlz(handlerInput, entry);
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
     }
 };
+
+const YesIntentOverwritePlzHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.YesIntent'
+            && handlerInput.attributesManager.getSessionAttributes().questionAsked === 'OverwritePlz';
+    },
+    handle(handlerInput) {
+        setQuestion(handlerInput, ''); //Reset Question
+        let speakOutput = "Du willst keinen bestehenden Eintrag überschreiben!"
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+}
+
+const NoIntentOverwritePlzHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NoIntent'
+            && handlerInput.attributesManager.getSessionAttributes().questionAsked === 'OverwritePlz';
+    },
+    handle(handlerInput) {
+        setQuestion(handlerInput, ''); //Reset Question
+        let speakOutput = "Du willst einen bestehenden Eintrag überschreiben!"
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+}
 
 const HelpIntentHandler = {
     canHandle(handlerInput) {
@@ -411,6 +436,8 @@ exports.handler = Alexa.SkillBuilders.custom()
         NoIntentWarnstufenInfoHandler,
         SetDefaultPLZsConfirmNameIntentHandler,
         SetDefaultPLZsIntentHandler,
+        YesIntentOverwritePlzHandler,
+        NoIntentOverwritePlzHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
