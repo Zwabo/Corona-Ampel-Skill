@@ -38,7 +38,7 @@ async function addDefaultPlz(handlerInput, entry){
     console.log(attributes);
     
     if(attributes === {}){
-        attributes = {"default_plzs": []};
+        attributes = {default_plzs: []};
     }
     let defaultPlzs = attributes.default_plzs;
     console.log(attributes);
