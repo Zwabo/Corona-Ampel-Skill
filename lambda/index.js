@@ -111,7 +111,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         for (let i = 0, len = plz.length; i < len; i += 1) {
             plzArr.push(+plz.charAt(i));
         }
-        let plzString = stringifyPlz(plz); //Seperate single plz digits
+        let plzString = plzArr[0] + " " + plzArr[1] + " " + plzArr[2] + " " + plzArr[3]; //Seperate single plz digits
 
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
