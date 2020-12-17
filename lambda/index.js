@@ -270,21 +270,20 @@ const SetDefaultPLZsIntentHandler = {
         attributesManager.setPersistentAttributes(attributes);
         await attributesManager.savePersistentAttributes();
         **/
-        
-        let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
-        
         let defaultPlzs = await getDefaultPlzs(handlerInput);
         
         if(defaultPlzs.length > 0){
-            let questionOutput = ' Willst du einen bestehenden Eintrag überschreiben?'
             setQuestion(handlerInput, 'OverwritePlz'); //Set session attribute question
             
+            let speakOutput = ' Willst du einen bestehenden Eintrag überschreiben?'
             return handlerInput.responseBuilder
-            .speak(speakOutput + questionOutput)
-            .reprompt(questionOutput)
+            .speak(speakOutput)
+            .reprompt(speakOutput)
             .getResponse();
         }
+        
         await addDefaultPlz(handlerInput, entry);
+        let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
