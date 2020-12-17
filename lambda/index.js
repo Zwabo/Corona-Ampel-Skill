@@ -91,7 +91,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
     
     if(!plz.value){
         const defaultPlzs = await getDefaultPlzs(handlerInput);
-        plz.value = JSON.parse(defaultPlzs).plz;
+        plz.value = defaultPlzs.plz;
     }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
