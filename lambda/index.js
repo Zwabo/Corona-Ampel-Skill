@@ -36,7 +36,7 @@ async function addDefaultPlz(handlerInput, entry){
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
     
-    if(attributes.defaultPlzs.length === 0){
+    if(!attributes.defaultPlzs){
         attributesManager.setPersistentAttributes({ "default_plzs": [entry] });
         await attributesManager.savePersistentAttributes();
         return;
