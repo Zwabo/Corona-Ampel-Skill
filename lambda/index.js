@@ -22,7 +22,7 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
 
 async function updatePersistentAttributes(handlerInput, entry){
     const attributesManager = handlerInput.attributesManager;
-    const attributes = await attributesManager.getPersistentAttributes() || {"default_plzs": [{"name": "test", "plz": "4113"}]};
+    const attributes = await attributesManager.getPersistentAttributes() || {default_plzs: []};
     return attributes.default_plzs;
 }
 
