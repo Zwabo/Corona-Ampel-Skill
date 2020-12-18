@@ -369,6 +369,7 @@ const OverwriteDefaultPlzIntentHandler = {
             speakOutput = `Der Eintrag "${oldEntryName}"" wurde überschrieben mit dem Eintrag "${entry.name}" mit der Postleitzahl ${stringifyPlz(entry.plz)}`
         }
         catch(e) {
+            console.log(e);
             speakOutput = e;
         }
         return handlerInput.responseBuilder
