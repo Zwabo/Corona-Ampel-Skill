@@ -184,8 +184,16 @@ const InProgressGetCoronaAmpelStatusIntentHandler = {
         && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
         && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS'
   },
-  handle(handlerInput) {
+  async handle(handlerInput) {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
+    console.log("openend!")
+    
+    if(handlerInput.requestEnvelope.request.intent.slots.name.value && !handlerInput.requestEnvelope.request.intent.slots.plz.value){
+        console.log("If also opened!")
+        const defaultPlzs = await getDefaultPlzs(handlerInput);
+        let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
+        currentIntent.slots.plz.value = foundElem.plz; //Set slot plz value to found elem plz 
+    }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
       .getResponse();
