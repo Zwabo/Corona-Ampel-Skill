@@ -124,7 +124,9 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
   canHandle(handlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
         && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
-        && handlerInput.requestEnvelope.request.dialogState === 'STARTED';
+        && handlerInput.requestEnvelope.request.dialogState === 'STARTED'
+        && !handlerInput.requestEnvelope.request.intent.slots.name.value
+        && !handlerInput.requestEnvelope.request.intent.slots.plz.value;
   },
   async handle(handlerInput) {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
