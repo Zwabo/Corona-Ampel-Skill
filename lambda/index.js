@@ -143,7 +143,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
         
         if(defaultPlzs.length > 1){
             return handlerInput.responseBuilder
-                .speak('Bitte sag mir den Namen dem du der Postleitzahl gegeben hast die du abrufen willst.')
+                .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
                 .addElicitSlotDirective('name')
                 .getResponse();
         }
@@ -151,6 +151,27 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
             plz.value = defaultPlzs[0].plz;
         }
     }
+    return handlerInput.responseBuilder
+      .addDelegateDirective(currentIntent)
+      .getResponse();
+  },
+};
+
+const StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler = {
+  canHandle(handlerInput) {
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+        && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
+        && handlerInput.requestEnvelope.request.dialogState === '!COMPLETED'
+        && handlerInput.requestEnvelope.request.intent.slots.name.value
+        && !handlerInput.requestEnvelope.request.intent.slots.plz.value;
+  },
+  async handle(handlerInput) {
+    const currentIntent = handlerInput.requestEnvelope.request.intent;
+    const defaultPlzs = await getDefaultPlzs(handlerInput);
+    
+    let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
+    currentIntent.slots.plz.value = foundElem.plz; //Set slot plz value to found elem plz
+    
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
       .getResponse();
