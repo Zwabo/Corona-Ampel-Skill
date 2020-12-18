@@ -358,8 +358,8 @@ const OverwriteDefaultPlzIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent';
     },
     async handle(handlerInput) {
-        let speakOutput = "";
         try {
+            let speakOutput = "";
             setQuestion(handlerInput, ''); //Reset Question
             
             let oldEntryName = handlerInput.requestEnvelope.request.intent.slots.name.value; //Name of the entry that should be overwritten
@@ -374,7 +374,7 @@ const OverwriteDefaultPlzIntentHandler = {
         }
         catch(e) {
             console.log(e);
-            speakOutput = e;
+            let speakOutput = e;
             
             return handlerInput.responseBuilder
             .speak(speakOutput)
