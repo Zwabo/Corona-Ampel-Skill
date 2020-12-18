@@ -20,7 +20,7 @@ function setSessionWarnstufe(handlerInput, warnstufe) {
   handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
 
-function setSingleSessionAttribute(handlerInput, content, type){
+function setSingleSessionAttribute(handlerInput, content, type) {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
     
     switch(type){
@@ -38,23 +38,23 @@ function setSingleSessionAttribute(handlerInput, content, type){
     handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 }
 
-async function updatePersistentAttributes(handlerInput, entry){
+async function updatePersistentAttributes(handlerInput, entry) {
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {"default_plzs": []};
     return attributes.default_plzs;
 }
 
-async function getDefaultPlzs(handlerInput){
+async function getDefaultPlzs(handlerInput) {
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
     return attributes.default_plzs;
 }
 
-async function addDefaultPlz(handlerInput, entry){
+async function addDefaultPlz(handlerInput, entry) {
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
     
-    if(!attributes.default_plzs){
+    if(!attributes.default_plzs) {
         attributesManager.setPersistentAttributes({ "default_plzs": [entry] });
         await attributesManager.savePersistentAttributes();
         return;
@@ -67,7 +67,7 @@ async function addDefaultPlz(handlerInput, entry){
     await attributesManager.savePersistentAttributes();
 }
 
-async function overwriteDefaultPlz(handlerInput, entry, oldEntryName){
+async function overwriteDefaultPlz(handlerInput, entry, oldEntryName) {
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
     
@@ -75,18 +75,23 @@ async function overwriteDefaultPlz(handlerInput, entry, oldEntryName){
     
     //Find entry to be overwritten and put new entry in its index
     let i = defaultPlzs.findIndex(entry => entry.name === oldEntryName);
+    
+    if(i === -1){
+        throw new Error('Es existiert kein Eintrag mit diesem Namen!');
+    }
+    
     defaultPlzs[i] = entry;
     
     attributesManager.setPersistentAttributes(attributes);
     await attributesManager.savePersistentAttributes();
 }
 
-function getWarnstufenColor(warnstufe){
+function getWarnstufenColor(warnstufe) {
     let warnstufenArr = ["grün", "gelb", "orange", "rot"];
     return warnstufenArr[warnstufe - 1];
 }
 
-function stringifyPlz(plz){
+function stringifyPlz(plz) {
         //Creating array of single PLZ-digits
         let plzArr = [];
         for (let i = 0, len = plz.length; i < len; i += 1) {
@@ -353,13 +358,19 @@ const OverwriteDefaultPlzIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent';
     },
     async handle(handlerInput) {
-        setQuestion(handlerInput, ''); //Reset Question
-        
-        let oldEntryName = handlerInput.requestEnvelope.request.intent.slots.name.value; //Name of the entry that should be overwritten
-        const entry = handlerInput.attributesManager.getSessionAttributes().defaultPlz; //Entry that should be placed
-        await overwriteDefaultPlz(handlerInput, entry, oldEntryName); //Overwriting old entry with new one
-        
-        let speakOutput = `Der Eintrag ${oldEntryName} wurde überschrieben mit dem Eintrag "${entry.name}" mit der Postleitzahl ${stringifyPlz(entry.plz)}`
+        let speakOutput = "";
+        try {
+            setQuestion(handlerInput, ''); //Reset Question
+            
+            let oldEntryName = handlerInput.requestEnvelope.request.intent.slots.name.value; //Name of the entry that should be overwritten
+            const entry = handlerInput.attributesManager.getSessionAttributes().defaultPlz; //Entry that should be placed
+            await overwriteDefaultPlz(handlerInput, entry, oldEntryName); //Overwriting old entry with new one
+            
+            speakOutput = `Der Eintrag "${oldEntryName}"" wurde überschrieben mit dem Eintrag "${entry.name}" mit der Postleitzahl ${stringifyPlz(entry.plz)}`
+        }
+        catch(e) {
+            speakOutput = e;
+        }
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
