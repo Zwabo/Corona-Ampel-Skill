@@ -379,7 +379,7 @@ const OverwriteDefaultPlzIntentHandler = {
             
             return handlerInput.responseBuilder
             .speak(speakOutput)
-            .addDelegateDirective()
+            .addElicitSlotDirective('name')
             .getResponse();
         }
     }
