@@ -352,10 +352,45 @@ const NoIntentOverwritePlzHandler = {
     }
 }
 
+const StartedInProgressOverwriteDefaultPlzIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent'
+            && handlerInput.requestEnvelope.request.dialogState !== 'COMPLETED';
+    },
+    async handle(handlerInput) {
+        try {
+            let speakOutput = "";
+            setQuestion(handlerInput, ''); //Reset Question
+            
+            let oldEntryName = handlerInput.requestEnvelope.request.intent.slots.name.value; //Name of the entry that should be overwritten
+            let entry = handlerInput.attributesManager.getSessionAttributes().defaultPlz; //Entry that should be placed
+            await overwriteDefaultPlz(handlerInput, entry, oldEntryName); //Overwriting old entry with new one
+            
+            speakOutput = `Der Eintrag "${oldEntryName}"" wurde überschrieben mit dem Eintrag "${entry.name}" mit der Postleitzahl ${stringifyPlz(entry.plz)}`
+            
+            return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .addDelegateDirective()
+            .getResponse();
+        }
+        catch(e) {
+            let speakOutput = e.message;
+            handlerInput.requestEnvelope.request.intent.slots.name.value = undefined;
+            
+            return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .addDelegateDirective()
+            .getResponse();
+        }
+    }
+}
+
 const OverwriteDefaultPlzIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent'
+            && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
     },
     async handle(handlerInput) {
         try {
