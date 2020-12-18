@@ -391,7 +391,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        const speakOutput = 'Du kannst den aktuellen Corona Ampel Status abfragen. Frage mich einfach danach';
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -407,7 +407,7 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = 'Goodbye!';
+        const speakOutput = 'Bis zum nächsten mal!';
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
