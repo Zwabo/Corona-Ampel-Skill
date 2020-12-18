@@ -163,6 +163,7 @@ const StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler = {
         && !handlerInput.requestEnvelope.request.intent.slots.plz.value;
   },
   async handle(handlerInput) {
+      console.log("right called!!");
     const currentIntent = handlerInput.requestEnvelope.request.intent;
     const defaultPlzs = await getDefaultPlzs(handlerInput);
     
