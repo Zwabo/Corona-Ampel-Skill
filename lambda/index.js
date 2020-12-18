@@ -528,8 +528,8 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         StartedGetCoronaAmpelStatusIntentHandler,
-        InProgressGetCoronaAmpelStatusIntentHandler,
         StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler,
+        InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
         YesIntentWarnstufenInfoHandler,
         NoIntentWarnstufenInfoHandler,
