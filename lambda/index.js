@@ -33,6 +33,9 @@ function setSingleSessionAttribute(handlerInput, content, type) {
         case 'defaultPlz':
             sessionAttributes.defaultPlz = content;
             break;
+        case 'multiplePlzs':
+            sessionAttributes.multiplePlzs = content;
+            break;
     }
     
     handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
@@ -137,7 +140,16 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
     
     if(!plz.value){
         const defaultPlzs = await getDefaultPlzs(handlerInput);
-        plz.value = defaultPlzs[0].plz;
+        
+        if(defaultPlzs.length > 1){
+            return handlerInput.responseBuilder
+                .speak('Bitte sag mir den Namen dem du der Postleitzahl gegeben hast die du abrufen willst.')
+                .addElicitSlotDirective('name')
+                .getResponse();
+        }
+        else{
+            plz.value = defaultPlzs[0].plz;
+        }
     }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
