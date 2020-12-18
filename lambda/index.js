@@ -192,7 +192,7 @@ const InProgressGetCoronaAmpelStatusIntentHandler = {
         console.log("If also opened!")
         const defaultPlzs = await getDefaultPlzs(handlerInput);
         let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
-        currentIntent.slots.plz.value = foundElem.plz; //Set slot plz value to found elem plz 
+        currentIntent.slots.PLZ.value = foundElem.plz; //Set slot plz value to found elem plz 
     }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
