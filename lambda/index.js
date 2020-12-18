@@ -374,7 +374,7 @@ const OverwriteDefaultPlzIntentHandler = {
         }
         catch(e) {
             console.log(e);
-            let speakOutput = e;
+            let speakOutput = e.message;
             
             return handlerInput.responseBuilder
             .speak(speakOutput)
