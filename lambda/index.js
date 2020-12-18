@@ -376,6 +376,11 @@ const OverwriteDefaultPlzIntentHandler = {
             let speakOutput = e.message;
             
             return handlerInput.responseBuilder
+            .addDelegateDirective({
+                name: 'OverwriteDefaultPlzIntent',
+                confirmationStatus: 'NONE',
+                slots: {}
+            })
             .speak(speakOutput)
             .getResponse();
         }
