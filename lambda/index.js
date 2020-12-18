@@ -188,7 +188,7 @@ const InProgressGetCoronaAmpelStatusIntentHandler = {
     const currentIntent = handlerInput.requestEnvelope.request.intent;
     console.log("openend!")
     
-    if(handlerInput.requestEnvelope.request.intent.slots.name.value && !handlerInput.requestEnvelope.request.intent.slots.plz.value){
+    if(handlerInput.requestEnvelope.request.intent.slots.name.value && !handlerInput.requestEnvelope.request.intent.slots.PLZ.value){
         console.log("If also opened!")
         const defaultPlzs = await getDefaultPlzs(handlerInput);
         let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
