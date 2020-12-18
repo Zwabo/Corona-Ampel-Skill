@@ -393,32 +393,9 @@ const OverwriteDefaultPlzIntentHandler = {
             && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
     },
     async handle(handlerInput) {
-        try {
-            let speakOutput = "";
-            setQuestion(handlerInput, ''); //Reset Question
-            
-            let oldEntryName = handlerInput.requestEnvelope.request.intent.slots.name.value; //Name of the entry that should be overwritten
-            const entry = handlerInput.attributesManager.getSessionAttributes().defaultPlz; //Entry that should be placed
-            await overwriteDefaultPlz(handlerInput, entry, oldEntryName); //Overwriting old entry with new one
-            
-            speakOutput = `Der Eintrag "${oldEntryName}"" wurde überschrieben mit dem Eintrag "${entry.name}" mit der Postleitzahl ${stringifyPlz(entry.plz)}`
-            
             return handlerInput.responseBuilder
-            .speak(speakOutput)
+            .speak("test")
             .getResponse();
-        }
-        catch(e) {
-            let speakOutput = e.message;
-            
-            return handlerInput.responseBuilder
-            .addDelegateDirective({
-                name: 'OverwriteDefaultPlzIntent',
-                confirmationStatus: 'NONE',
-                slots: {}
-            })
-            .speak(speakOutput)
-            .getResponse();
-        }
     }
 }
 
