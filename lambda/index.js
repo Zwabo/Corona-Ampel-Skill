@@ -374,7 +374,7 @@ const OverwriteDefaultPlzIntentHandler = {
             .getResponse();
         }
         catch(e) {
-            let speakOutput = e.message;
+            let speakOutput = `${e.message} Bitte nenne einen Namen der existiert.`;
             handlerInput.requestEnvelope.request.intent.slots.name.value = undefined;
             
             return handlerInput.responseBuilder
