@@ -33,9 +33,6 @@ function setSingleSessionAttribute(handlerInput, content, type) {
         case 'defaultPlz':
             sessionAttributes.defaultPlz = content;
             break;
-        case 'multiplePlzs':
-            sessionAttributes.multiplePlzs = content;
-            break;
     }
     
     handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
@@ -530,6 +527,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         LaunchRequestHandler,
         StartedGetCoronaAmpelStatusIntentHandler,
         InProgressGetCoronaAmpelStatusIntentHandler,
+        StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
         YesIntentWarnstufenInfoHandler,
         NoIntentWarnstufenInfoHandler,
