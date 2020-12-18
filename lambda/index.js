@@ -154,6 +154,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
   },
 };
 
+/**
 const StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler = {
   canHandle(handlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -165,16 +166,17 @@ const StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler = {
   async handle(handlerInput) {
       console.log("right called!!");
     const currentIntent = handlerInput.requestEnvelope.request.intent;
-    /**const defaultPlzs = await getDefaultPlzs(handlerInput);
+    const defaultPlzs = await getDefaultPlzs(handlerInput);
     
     let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
-    currentIntent.slots.plz.value = foundElem.plz; //Set slot plz value to found elem plz **/
+    currentIntent.slots.plz.value = foundElem.plz; //Set slot plz value to found elem plz 
     
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
       .getResponse();
   },
 };
+**/
 
 const InProgressGetCoronaAmpelStatusIntentHandler = {
   canHandle(handlerInput) {
@@ -527,7 +529,7 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         StartedGetCoronaAmpelStatusIntentHandler,
-        StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler,
+        //StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler,
         InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
         YesIntentWarnstufenInfoHandler,
