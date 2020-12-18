@@ -158,7 +158,7 @@ const StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler = {
   canHandle(handlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
         && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
-        && handlerInput.requestEnvelope.request.dialogState === '!COMPLETED'
+        && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS'
         && handlerInput.requestEnvelope.request.intent.slots.name.value
         && !handlerInput.requestEnvelope.request.intent.slots.plz.value;
   },
