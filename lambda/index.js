@@ -352,11 +352,11 @@ const NoIntentOverwritePlzHandler = {
     }
 }
 
-const StartedInProgressOverwriteDefaultPlzIntentHandler = {
+const OverwriteDefaultPlzIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent'
-            && handlerInput.requestEnvelope.request.dialogState !== 'COMPLETED';
+            && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
     },
     async handle(handlerInput) {
         try {
@@ -371,7 +371,6 @@ const StartedInProgressOverwriteDefaultPlzIntentHandler = {
             
             return handlerInput.responseBuilder
             .speak(speakOutput)
-            .addDelegateDirective()
             .getResponse();
         }
         catch(e) {
@@ -383,19 +382,6 @@ const StartedInProgressOverwriteDefaultPlzIntentHandler = {
             .addDelegateDirective()
             .getResponse();
         }
-    }
-}
-
-const OverwriteDefaultPlzIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OverwriteDefaultPlzIntent'
-            && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
-    },
-    async handle(handlerInput) {
-            return handlerInput.responseBuilder
-            .speak("test")
-            .getResponse();
     }
 }
 
@@ -518,7 +504,6 @@ exports.handler = Alexa.SkillBuilders.custom()
         SetDefaultPLZsIntentHandler,
         YesIntentOverwritePlzHandler,
         NoIntentOverwritePlzHandler,
-        StartedInProgressOverwriteDefaultPlzIntentHandler,
         OverwriteDefaultPlzIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
