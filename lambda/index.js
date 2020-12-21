@@ -383,9 +383,12 @@ const NoIntentOverwritePlzHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NoIntent'
             && handlerInput.attributesManager.getSessionAttributes().questionAsked === 'OverwritePlz';
     },
-    handle(handlerInput) {
+    async handle(handlerInput) {
         setQuestion(handlerInput, ''); //Reset Question
-        let speakOutput = "Du willst keinen bestehenden Eintrag überschreiben!"
+        let entry = handlerInput.attributesManager.getSessionAttributes().defaultPlz; //Entry that should be placed
+        await addDefaultPlz(handlerInput, entry);
+        
+        let speakOutput = `Der Eintrag "${entry.name}" mit der Postleitzahl ${stringifyPlz(entry.plz)} wurde gespeichert!`
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
