@@ -345,7 +345,7 @@ const SetDefaultPLZsIntentHandler = {
                 .reprompt(speakOutput)
                 .getResponse();
         }
-        
+        console.log("after first if");
         await addDefaultPlz(handlerInput, entry);
         let speakOutput = `Die gespeicherte Postleitzahl lautet: ${entry.plz}. Der Name lautet: ${entry.name}`;
         
