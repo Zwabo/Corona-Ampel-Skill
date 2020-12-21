@@ -332,8 +332,9 @@ const SetDefaultPLZsIntentHandler = {
         attributesManager.setPersistentAttributes(attributes);
         await attributesManager.savePersistentAttributes();
         **/
+        console.log("before");
         let defaultPlzs = await getDefaultPlzs(handlerInput);
-        
+        console.log("after");
         if(defaultPlzs.length > 0){
             setQuestion(handlerInput, 'OverwritePlz'); //Set session attribute question
             setSingleSessionAttribute(handlerInput, entry, 'defaultPlz');
