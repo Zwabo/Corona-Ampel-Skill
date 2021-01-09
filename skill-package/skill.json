@@ -26,21 +26,33 @@
       }
     },
     "manifestVersion": "1.0",
+    "permissions": [],
+    "privacyAndCompliance": {
+      "locales": {
+        "de-DE": {}
+      }
+    },
     "publishingInformation": {
-      "category": "KNOWLEDGE_AND_TRIVIA",
+      "automaticDistribution": {
+        "isActive": false
+      },
+      "category": "HEALTH_AND_FITNESS",
       "distributionCountries": [],
       "isAvailableWorldwide": true,
       "locales": {
         "de-DE": {
-          "description": "Sample Full Description",
+          "description": "Mit diesem Skill kann der aktuelle Corona-Ampel Status abgerufen werden.",
           "examplePhrases": [
             "Alexa öffne hallo welt",
             "hallo",
             "hilfe"
           ],
-          "keywords": [],
+          "keywords": [
+            "corona",
+            "corona-ampel"
+          ],
           "name": "Corona-Ampel",
-          "summary": "Sample Short Description"
+          "summary": "Corona Ampel Status für Österreich"
         }
       },
       "testingInstructions": "Sample Testing Instructions."

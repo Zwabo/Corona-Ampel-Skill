@@ -16,16 +16,6 @@
           "samples": []
         },
         {
-          "name": "HelloWorldIntent",
-          "slots": [],
-          "samples": [
-            "hallo",
-            "wie geht\u0027s dir",
-            "sag hallo welt",
-            "sag hallo"
-          ]
-        },
-        {
           "name": "AMAZON.NavigateHomeIntent",
           "samples": []
         },
@@ -43,18 +33,123 @@
                 "Für {PLZ}",
                 "{PLZ}"
               ]
+            },
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery"
             }
           ],
           "samples": [
+            "Zeige mir die Corona Ampel für {name}",
             "Zeig mir den Corona Status für {PLZ}",
             "Zeig mir den aktuellen Corona Status",
             "Sag mir den aktuellen Corona Ampel Status",
             "Corona Ampel Status",
             "Zeige mir die aktuelle Corona-Ampel"
           ]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": [
+            "Bitte ja",
+            "Sicher",
+            "Ja bitte",
+            "Ja"
+          ]
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": [
+            "Nein danke",
+            "Nein"
+          ]
+        },
+        {
+          "name": "SetDefaultPLZsIntent",
+          "slots": [
+            {
+              "name": "PLZ",
+              "type": "AMAZON.FOUR_DIGIT_NUMBER",
+              "samples": [
+                "Setze es auf {PLZ}",
+                "Setze sie auf {PLZ}",
+                "Setze die Postleitzahl auf {PLZ}",
+                "{PLZ}",
+                "Auf {PLZ}"
+              ]
+            },
+            {
+              "name": "Name",
+              "type": "AMAZON.SearchQuery",
+              "samples": [
+                "Unter {Name} bitte",
+                "{Name}",
+                "Speicher sie unter {Name} ab",
+                "Unter {Name}"
+              ]
+            }
+          ],
+          "samples": [
+            "Setze eine neue Standard Postleitzahl",
+            "Setze meine Standard-Postleitzahl auf {PLZ}",
+            "Standard-Postleitzahl auf {PLZ} setzen",
+            "Setze PLZ auf {PLZ}",
+            "Postleitzahl auf {PLZ} setzen",
+            "Setze meine Postleitzahl auf {PLZ}"
+          ]
+        },
+        {
+          "name": "OverwriteDefaultPlzIntent",
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery",
+              "samples": [
+                "Der Name ist {name}",
+                "{name}"
+              ]
+            }
+          ],
+          "samples": []
         }
       ],
-      "types": [],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Nein",
+                "synonyms": [
+                  "Na",
+                  "Ne",
+                  "Nope",
+                  "No",
+                  "Danke nein",
+                  "Nein danke",
+                  "Auf keinen Fall",
+                  "Bitte nicht"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "Ja",
+                "synonyms": [
+                  "Bitte ja",
+                  "Ja sicher",
+                  "Sicher",
+                  "Jo",
+                  "Jep",
+                  "Yes",
+                  "Jo bitte",
+                  "Ja bitte"
+                ]
+              }
+            }
+          ],
+          "name": "YesNo"
+        }
+      ],
       "modelConfiguration": {
         "fallbackIntentSensitivity": {
           "level": "LOW"
@@ -76,6 +171,55 @@
               "prompts": {
                 "elicitation": "Elicit.Slot.1081718378104.1516105670693"
               }
+            },
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "delegationStrategy": "SKILL_RESPONSE"
+        },
+        {
+          "name": "SetDefaultPLZsIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "PLZ",
+              "type": "AMAZON.FOUR_DIGIT_NUMBER",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1186262936165.1045977870407"
+              }
+            },
+            {
+              "name": "Name",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1459212888544.947168805491"
+              }
+            }
+          ]
+        },
+        {
+          "name": "OverwriteDefaultPlzIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1412241908202.1514971098214"
+              }
             }
           ]
         }
@@ -91,8 +235,44 @@
             "value": "Für welche Postleitzahl?"
           }
         ]
+      },
+      {
+        "id": "Elicit.Slot.1186262936165.1045977870407",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Auf welche Postleitzahl soll ich es setzen?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1459212888544.947168805491",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Unter welchem Namen soll ich die Postleitzahl abspeichern?"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Slot.1459212888544.958404894387",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Stimmt die Postleitzahl {PLZ} ?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1412241908202.1514971098214",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Nenne den Namen der Postleitzahl die du löschen möchtest."
+          }
+        ]
       }
     ]
   },
-  "version": "3"
+  "version": "15"
 }

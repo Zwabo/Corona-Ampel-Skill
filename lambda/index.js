@@ -221,7 +221,7 @@ const GetCoronaAmpelStatusIntentHandler = {
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
         if(plz !== 0){
-            let result = await axios.get('https://nwh99aug3j.execute-api.us-east-1.amazonaws.com/status/' + plz);
+            let result = await axios.get('https://mpg9pvi8j0.execute-api.us-east-1.amazonaws.com/' + plz);
             let warnstufe = getWarnstufenColor(result.data.Warnstufe);
             speakOutput = "Für die Postleitzahl " + plzString + " steht die Corona-Ampel auf " + warnstufe + '. ';
             setSessionWarnstufe(handlerInput, result.data.Warnstufe); //Set Warnstufe as session attribute
