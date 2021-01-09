@@ -283,25 +283,26 @@ const InProgressGetCasesIntentHandler = {
           && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS'
     },
     async handle(handlerInput) {
-      const currentIntent = handlerInput.requestEnvelope.request.intent;
-      console.log("openend!")
-      
-      const defaultPlzs = await getDefaultPlzs(handlerInput);
-      let plz = currentIntent.slots.plz;
-
-      if(defaultPlzs.length > 1){
-          return handlerInput.responseBuilder
-              .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
-              .addElicitSlotDirective('name')
-              .getResponse();
-      }
-      else{
-          plz.value = defaultPlzs[0].plz;
-      }
-      return handlerInput.responseBuilder
-        .addDelegateDirective(currentIntent)
-        .getResponse();
-    },
+        const currentIntent = handlerInput.requestEnvelope.request.intent;
+        console.log("openend!")
+        
+        if(handlerInput.requestEnvelope.request.intent.slots.name.value && !handlerInput.requestEnvelope.request.intent.slots.PLZ.value){
+            console.log("If also opened!")
+            const defaultPlzs = await getDefaultPlzs(handlerInput);
+            let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
+            if(foundElem) currentIntent.slots.plz.value = foundElem.plz; //Set slot plz value to found elem plz
+            //Elicit name-slot again, if the name said by the user doesn't exist
+            else {
+                return handlerInput.responseBuilder
+                    .speak('Du hast keine Postleitzahl mit diesem Namen hinterlegt. Sag mir einen Namen, den du hinterlegt hast.')
+                    .addElicitSlotDirective('name')
+                    .getResponse();
+            }
+        }
+        return handlerInput.responseBuilder
+          .addDelegateDirective(currentIntent)
+          .getResponse();
+      },
   };
 
 const GetCasesIntentHandler = {
