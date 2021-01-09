@@ -189,7 +189,7 @@ const InProgressGetCoronaAmpelStatusIntentHandler = {
     if(handlerInput.requestEnvelope.request.intent.slots.name.value && !handlerInput.requestEnvelope.request.intent.slots.PLZ.value){
         console.log("If also opened!")
         const defaultPlzs = await getDefaultPlzs(handlerInput);
-        let foundElem = defaultPlzs.find(elem => elem.name === cWurrentIntent.slots.name.value);
+        let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
         if(foundElem) currentIntent.slots.PLZ.value = foundElem.plz; //Set slot plz value to found elem plz
         //Elicit name-slot again, if the name said by the user doesn't exist
         else {
