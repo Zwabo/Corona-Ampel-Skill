@@ -190,7 +190,7 @@ const InProgressGetCoronaAmpelStatusIntentHandler = {
         console.log("If also opened!")
         const defaultPlzs = await getDefaultPlzs(handlerInput);
         let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
-        currentIntent.slots.PLZ.value = foundElem.plz; //Set slot plz value to found elem plz 
+        if(foundElem) currentIntent.slots.PLZ.value = foundElem.plz; //Set slot plz value to found elem plz 
     }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
@@ -202,6 +202,43 @@ const GetCoronaAmpelStatusIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCoronaAmpelStatusIntent'
+            && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
+    },
+    async handle(handlerInput) {
+        let intentPlz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
+        
+        //Setting PLZ either to default_plz stored in the db or the intent plz
+        let plz = 0;
+        if(intentPlz !== null) plz = intentPlz.toString();
+        
+        //Creating array of single PLZ-digits
+        let plzArr = [];
+        for (let i = 0, len = plz.length; i < len; i += 1) {
+            plzArr.push(+plz.charAt(i));
+        }
+        let plzString = stringifyPlz(plz); //Seperate single plz digits
+
+        //Setting the speech output
+        let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
+        if(plz !== 0){
+            let result = await axios.get('https://mpg9pvi8j0.execute-api.us-east-1.amazonaws.com/' + plz);
+            let warnstufe = getWarnstufenColor(result.data.Warnstufe);
+            speakOutput = "Für die Postleitzahl " + plzString + " steht die Corona-Ampel auf " + warnstufe + '. ';
+            setSessionWarnstufe(handlerInput, result.data.Warnstufe); //Set Warnstufe as session attribute
+        }
+        setQuestion(handlerInput, 'WarnstufenInfo'); //Set Question
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput + 'Willst du Infos zu deiner Corona-Warnstufe?')
+            .reprompt('Benötigst du Infos zur Corona Warnstufe?')
+            .getResponse();
+    }
+};
+
+const GetCasesIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCasesIntent'
             && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
     },
     async handle(handlerInput) {
@@ -542,6 +579,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         //StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler,
         InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
+        GetCasesIntentHandler,
         YesIntentWarnstufenInfoHandler,
         NoIntentWarnstufenInfoHandler,
         SetDefaultPLZsConfirmNameIntentHandler,
