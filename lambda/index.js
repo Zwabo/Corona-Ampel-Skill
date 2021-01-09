@@ -189,11 +189,12 @@ const InProgressGetCoronaAmpelStatusIntentHandler = {
     if(handlerInput.requestEnvelope.request.intent.slots.name.value && !handlerInput.requestEnvelope.request.intent.slots.PLZ.value){
         console.log("If also opened!")
         const defaultPlzs = await getDefaultPlzs(handlerInput);
-        let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
+        let foundElem = defaultPlzs.find(elem => elem.name === cWurrentIntent.slots.name.value);
         if(foundElem) currentIntent.slots.PLZ.value = foundElem.plz; //Set slot plz value to found elem plz
+        //Elicit name-slot again, if the name said by the user doesn't exist
         else {
             return handlerInput.responseBuilder
-                .speak('Du hast keine Postleitzahl mit diesem Namen hinterlegt. Sag mir einen Namen den du hinterlegt hast.')
+                .speak('Du hast keine Postleitzahl mit diesem Namen hinterlegt. Sag mir einen Namen, den du hinterlegt hast.')
                 .addElicitSlotDirective('name')
                 .getResponse();
         }
@@ -241,6 +242,68 @@ const GetCoronaAmpelStatusIntentHandler = {
     }
 };
 
+const StartedGetCasesIntentHandler = {
+    canHandle(handlerInput) {
+      return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+          && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCasesIntent'
+          && handlerInput.requestEnvelope.request.dialogState === 'STARTED';
+    },
+    async handle(handlerInput) {
+      const currentIntent = handlerInput.requestEnvelope.request.intent;
+      let plz = currentIntent.slots.plz;
+      
+      if(plz.value % 1 !== 0){
+          plz.value = plz.value * 100;
+          Math.floor(plz.value);
+      }
+      
+      if(!plz.value){
+          const defaultPlzs = await getDefaultPlzs(handlerInput);
+          
+          if(defaultPlzs.length > 1){
+              return handlerInput.responseBuilder
+                  .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
+                  .addElicitSlotDirective('name')
+                  .getResponse();
+          }
+          else{
+              plz.value = defaultPlzs[0].plz;
+          }
+      }
+      return handlerInput.responseBuilder
+        .addDelegateDirective(currentIntent)
+        .getResponse();
+    },
+  };
+
+const InProgressGetCasesIntentHandler = {
+    canHandle(handlerInput) {
+      return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+          && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetCasesIntent'
+          && handlerInput.requestEnvelope.request.dialogState === 'IN_PROGRESS'
+    },
+    async handle(handlerInput) {
+      const currentIntent = handlerInput.requestEnvelope.request.intent;
+      console.log("openend!")
+      
+      const defaultPlzs = await getDefaultPlzs(handlerInput);
+      let plz = currentIntent.slots.plz;
+
+      if(defaultPlzs.length > 1){
+          return handlerInput.responseBuilder
+              .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
+              .addElicitSlotDirective('name')
+              .getResponse();
+      }
+      else{
+          plz.value = defaultPlzs[0].plz;
+      }
+      return handlerInput.responseBuilder
+        .addDelegateDirective(currentIntent)
+        .getResponse();
+    },
+  };
+
 const GetCasesIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -248,7 +311,7 @@ const GetCasesIntentHandler = {
             && handlerInput.requestEnvelope.request.dialogState === 'COMPLETED';
     },
     async handle(handlerInput) {
-        let intentPlz = handlerInput.requestEnvelope.request.intent.slots.PLZ.value;
+        let intentPlz = handlerInput.requestEnvelope.request.intent.slots.plz.value;
         
         //Setting PLZ either to default_plz stored in the db or the intent plz
         let plz = 0;
@@ -585,6 +648,8 @@ exports.handler = Alexa.SkillBuilders.custom()
         //StartedInProgressMultiplePlzsGetCoronaAmpelStatusIntentHandler,
         InProgressGetCoronaAmpelStatusIntentHandler,
         GetCoronaAmpelStatusIntentHandler,
+        StartedGetCasesIntentHandler,
+        InProgressGetCasesIntentHandler,
         GetCasesIntentHandler,
         YesIntentWarnstufenInfoHandler,
         NoIntentWarnstufenInfoHandler,
