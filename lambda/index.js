@@ -327,9 +327,10 @@ const GetCasesIntentHandler = {
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
         if(plz !== 0){
+            console.log("before dings");
             let result = await axios.get('https://mpg9pvi8j0.execute-api.us-east-1.amazonaws.com/cases/' + plz);
             let warnstufe = getWarnstufenColor(result.data.Warnstufe);
-
+            console.log("after dings");
             speakOutput = "Im Bezirk " + result.data.bezirk + " hat es bisher " + result.data.anzahl + 
             " Fälle gegeben." + " Insgesamt sind " + result.data.anzahlTot + " an Covid19 verstorben." +
             " In den letzten 7 Tagen hat es " + result.data.anzahl7Tage + " Neuinfektionen in diesem Bezirk gegeben.";
