@@ -191,6 +191,12 @@ const InProgressGetCoronaAmpelStatusIntentHandler = {
         const defaultPlzs = await getDefaultPlzs(handlerInput);
         let foundElem = defaultPlzs.find(elem => elem.name === currentIntent.slots.name.value);
         if(foundElem) currentIntent.slots.PLZ.value = foundElem.plz; //Set slot plz value to found elem plz
+        else {
+            return handlerInput.responseBuilder
+                .speak('Du hast keine Postleitzahl mit diesem Namen hinterlegt. Sag mir einen Namen den du hinterlegt hast.')
+                .addElicitSlotDirective('name')
+                .getResponse();
+        }
     }
     return handlerInput.responseBuilder
       .addDelegateDirective(currentIntent)
