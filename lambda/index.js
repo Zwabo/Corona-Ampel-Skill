@@ -327,9 +327,12 @@ const GetCasesIntentHandler = {
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
         if(plz !== 0){
-            let result = await axios.get('https://mpg9pvi8j0.execute-api.us-east-1.amazonaws.com/' + plz);
+            let result = await axios.get('https://mpg9pvi8j0.execute-api.us-east-1.amazonaws.com/cases/' + plz);
             let warnstufe = getWarnstufenColor(result.data.Warnstufe);
-            speakOutput = "Für die Postleitzahl " + plzString + " steht die Corona-Ampel auf " + warnstufe + '. ';
+            {"bezirk":"Linz-Land","anzahlEinwohner":"151371","anzahl":"6581","anzahlTot":"73","anzahl7Tage":"203"}
+            speakOutput = "Im Bezirk " + result.data.bezirk + " hat es bisher " + result.data.anzahl + 
+            " Fälle gegeben." + " Insgesamt sind " + result.data.anzahlTot + " an Covid19 verstorben." +
+            " In den letzten 7 Tagen hat es " + result.data.anzahl7Tage + " Neuinfektionen in diesem Bezirk gegeben.";
             setSessionWarnstufe(handlerInput, result.data.Warnstufe); //Set Warnstufe as session attribute
         }
         setQuestion(handlerInput, 'WarnstufenInfo'); //Set Question
