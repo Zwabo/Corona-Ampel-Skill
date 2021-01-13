@@ -256,6 +256,7 @@ const StartedGetCasesIntentHandler = {
           plz.value = plz.value * 100;
           Math.floor(plz.value);
       }
+      console.log(plz.value);
       
       if(!plz.value){
           const defaultPlzs = await getDefaultPlzs(handlerInput);
@@ -272,6 +273,7 @@ const StartedGetCasesIntentHandler = {
       }
       return handlerInput.responseBuilder
         .addDelegateDirective(currentIntent)
+        .addElicitSlotDirective('plz')
         .getResponse();
     },
   };
@@ -335,13 +337,11 @@ const GetCasesIntentHandler = {
             speakOutput = "Im Bezirk " + result.data.bezirk + " hat es bisher " + result.data.anzahl + 
             " Fälle gegeben." + " Insgesamt sind " + result.data.anzahlTot + " an Covid19 verstorben." +
             " In den letzten 7 Tagen hat es " + result.data.anzahl7Tage + " Neuinfektionen in diesem Bezirk gegeben.";
-            setSessionWarnstufe(handlerInput, result.data.Warnstufe); //Set Warnstufe as session attribute
         }
-        setQuestion(handlerInput, 'WarnstufenInfo'); //Set Question
 
         return handlerInput.responseBuilder
-            .speak(speakOutput + 'Willst du Infos zu deiner Corona-Warnstufe?')
-            .reprompt('Benötigst du Infos zur Corona Warnstufe?')
+            .speak(speakOutput)
+            .reprompt(speakOutput)
             .getResponse();
     }
 };
