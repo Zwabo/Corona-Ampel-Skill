@@ -477,6 +477,21 @@ const SetDefaultPLZsIntentHandler = {
     }
 };
 
+const GetDefaultPLZsIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'GetDefaultPLZsIntent';
+    },
+    async handle(handlerInput) {
+        let defaultPlzs = await getDefaultPlzs(handlerInput);
+        let speakOutput = `${defaultPlzs}`;
+        
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+};
+
 const YesIntentOverwritePlzHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -671,6 +686,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         NoIntentWarnstufenInfoHandler,
         SetDefaultPLZsConfirmNameIntentHandler,
         SetDefaultPLZsIntentHandler,
+        GetDefaultPLZsIntentHandler,
         YesIntentOverwritePlzHandler,
         NoIntentOverwritePlzHandler,
         OverwriteDefaultPlzIntentHandler,
