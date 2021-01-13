@@ -266,6 +266,7 @@ const StartedGetCasesIntentHandler = {
           }
           catch(err){
             console.log(err);
+            console.log("teststeste");
             return handlerInput.responseBuilder
             .addElicitSlotDirective('plz')
             .getResponse();
