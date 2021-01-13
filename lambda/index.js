@@ -135,6 +135,13 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
     
     if(!plz.value){
         const defaultPlzs = await getDefaultPlzs(handlerInput);
+
+        if(!defaultPlzs){
+            return handlerInput.responseBuilder
+            .speak('Für welche Postleitzahl möchtest du die Ampelfarbe wissen?')
+            .addElicitSlotDirective('PLZ')
+            .getResponse();
+        }
         
         if(defaultPlzs.length > 1){
             return handlerInput.responseBuilder
@@ -260,9 +267,8 @@ const StartedGetCasesIntentHandler = {
       
       if(!plz.value){
             const defaultPlzs = await getDefaultPlzs(handlerInput);
-            console.log("defaultplzs value: " + defaultPlzs);
+
             if(!defaultPlzs){
-                console.log("I'm in!!")
                 return handlerInput.responseBuilder
                 .speak('Für welche Postleitzahl möchtest du die Fallzahlen wissen?')
                 .addElicitSlotDirective('plz')
@@ -277,13 +283,6 @@ const StartedGetCasesIntentHandler = {
             }
             else if(defaultPlzs.length === 1) {
               plz.value = defaultPlzs[0].plz;
-            }
-            else {
-              console.log("No default plzs there and no slot given!!");
-  
-              return handlerInput.responseBuilder
-              .addElicitSlotDirective('plz')
-              .getResponse();
             }
       }
       return handlerInput.responseBuilder
@@ -344,12 +343,10 @@ const GetCasesIntentHandler = {
         //Setting the speech output
         let speakOutput = "Bitte setze eine Standard-Postleitzahl oder sag mir für welche Postleitzahl ich dir den Status sagen soll.";
         if(plz !== 0){
-            console.log("before dings");
             let result = await axios.get('https://mpg9pvi8j0.execute-api.us-east-1.amazonaws.com/cases/' + plz);
             let warnstufe = getWarnstufenColor(result.data.Warnstufe);
-            console.log("after dings");
             speakOutput = "Im Bezirk " + result.data.bezirk + " hat es bisher " + result.data.anzahl + 
-            " Fälle gegeben." + " Insgesamt sind " + result.data.anzahlTot + " an Covid19 verstorben." +
+            " Fälle gegeben." + " Insgesamt sind " + result.data.anzahlTot + " Personen an Covid19 verstorben." +
             " In den letzten 7 Tagen hat es " + result.data.anzahl7Tage + " Neuinfektionen in diesem Bezirk gegeben.";
         }
 
