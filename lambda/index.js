@@ -485,13 +485,14 @@ const GetDefaultPLZsIntentHandler = {
     async handle(handlerInput) {
         let defaultPlzs = await getDefaultPlzs(handlerInput);
 
+        let speakOutput = "";
         if(defaultPlzs) {
-            if(defaultPlzs.length > 1) let speakOutput = `Du hast ${defaultPlzs.length} Orte hinterlegt. `;
-            else let speakOutput = `Du hast einen Ort hinterlegt. `;
+            if(defaultPlzs.length > 1) speakOutput = `Du hast ${defaultPlzs.length} Orte hinterlegt. `;
+            else speakOutput = `Du hast einen Ort hinterlegt. `;
             defaultPlzs.map((entry, i) => speakOutput += `Der ${i + 1}. Ort mit der Postleitzahl ${entry.plz} heißt ${entry.name}. `)
         }
         else {
-            let speakOutput = `Du hast derzeit keine Orte hinterlegt.`;
+            speakOutput = `Du hast derzeit keine Orte hinterlegt.`;
         }
         
         return handlerInput.responseBuilder
