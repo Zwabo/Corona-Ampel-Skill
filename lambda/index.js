@@ -261,23 +261,22 @@ const StartedGetCasesIntentHandler = {
       if(!plz.value){
           const defaultPlzs = await getDefaultPlzs(handlerInput);
           
-          if(defaultPlzs.length > 1){
+          if(defaultPlzs.length > 1) {
               return handlerInput.responseBuilder
                   .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
                   .addElicitSlotDirective('name')
                   .getResponse();
           }
-          else if(defaultPlzs.length === 1){
-              plz.value = defaultPlzs[0].plz;
+          else if(defaultPlzs.length === 1) {
+            plz.value = defaultPlzs[0].plz;
           }
-          else{
-              console.log("No default plzs there and no slot given!!")
+          else {
+            console.log("No default plzs there and no slot given!!");
             return handlerInput.responseBuilder
             .addElicitSlotDirective('plz')
             .getResponse();
           }
       }
-      console.log("Plz given");
       return handlerInput.responseBuilder
         .addDelegateDirective(currentIntent)
         .getResponse();
