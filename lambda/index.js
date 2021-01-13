@@ -262,6 +262,7 @@ const StartedGetCasesIntentHandler = {
       if(!plz.value){
           try{
             const defaultPlzs = await getDefaultPlzs(handlerInput);
+            console.log(defaultPlzs);
           }
           catch(err){
             console.log(err);
@@ -269,22 +270,23 @@ const StartedGetCasesIntentHandler = {
             .addElicitSlotDirective('plz')
             .getResponse();
           }
-          
-          if(defaultPlzs.length > 1) {
+          finally {
+            if(defaultPlzs.length > 1) {
+                return handlerInput.responseBuilder
+                    .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
+                    .addElicitSlotDirective('name')
+                    .getResponse();
+            }
+            else if(defaultPlzs.length === 1) {
+              plz.value = defaultPlzs[0].plz;
+            }
+            else {
+              console.log("No default plzs there and no slot given!!");
+  
               return handlerInput.responseBuilder
-                  .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
-                  .addElicitSlotDirective('name')
-                  .getResponse();
-          }
-          else if(defaultPlzs.length === 1) {
-            plz.value = defaultPlzs[0].plz;
-          }
-          else {
-            console.log("No default plzs there and no slot given!!");
-
-            return handlerInput.responseBuilder
-            .addElicitSlotDirective('plz')
-            .getResponse();
+              .addElicitSlotDirective('plz')
+              .getResponse();
+            }
           }
       }
       return handlerInput.responseBuilder
