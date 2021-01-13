@@ -484,7 +484,9 @@ const GetDefaultPLZsIntentHandler = {
     },
     async handle(handlerInput) {
         let defaultPlzs = await getDefaultPlzs(handlerInput);
-        let speakOutput = `${defaultPlzs}`;
+
+        let speakOutput = `Du hast ${defaultPlzs.length} Orte hinterlegt. `;
+        defaultPlzs.map((entry, i) => speakOutput += `Der ${i + 1}. Ort mit der Postleitzahl ${entry.plz} heißt ${entry.name}. `)
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
