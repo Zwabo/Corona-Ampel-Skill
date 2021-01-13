@@ -267,13 +267,17 @@ const StartedGetCasesIntentHandler = {
                   .addElicitSlotDirective('name')
                   .getResponse();
           }
-          else{
+          else if(defaultPlzs.length === 1){
               plz.value = defaultPlzs[0].plz;
+          }
+          else{
+            return handlerInput.responseBuilder
+            .addElicitSlotDirective('plz')
+            .getResponse();
           }
       }
       return handlerInput.responseBuilder
         .addDelegateDirective(currentIntent)
-        .addElicitSlotDirective('plz')
         .getResponse();
     },
   };
