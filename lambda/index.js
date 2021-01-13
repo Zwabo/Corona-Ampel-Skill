@@ -251,12 +251,12 @@ const StartedGetCasesIntentHandler = {
     async handle(handlerInput) {
       const currentIntent = handlerInput.requestEnvelope.request.intent;
       let plz = currentIntent.slots.plz;
+      console.log("Plz value: " + plz.value);
       
       if(plz.value % 1 !== 0){
           plz.value = plz.value * 100;
           Math.floor(plz.value);
       }
-      console.log(plz.value);
       
       if(!plz.value){
           const defaultPlzs = await getDefaultPlzs(handlerInput);
@@ -271,11 +271,13 @@ const StartedGetCasesIntentHandler = {
               plz.value = defaultPlzs[0].plz;
           }
           else{
+              console.log("No default plzs there and no slot given!!")
             return handlerInput.responseBuilder
             .addElicitSlotDirective('plz')
             .getResponse();
           }
       }
+      console.log("Plz given");
       return handlerInput.responseBuilder
         .addDelegateDirective(currentIntent)
         .getResponse();
