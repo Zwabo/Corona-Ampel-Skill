@@ -42,7 +42,8 @@ async function updatePersistentAttributes(handlerInput, entry) {
 async function getDefaultPlzs(handlerInput) {
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
-    return attributes.default_plzs;
+    if(attributes.default_plzs) return attributes.default_plzs;
+    else return Error("No default plz found!");
 }
 
 async function addDefaultPlz(handlerInput, entry) {
@@ -259,7 +260,15 @@ const StartedGetCasesIntentHandler = {
       }
       
       if(!plz.value){
-          const defaultPlzs = await getDefaultPlzs(handlerInput);
+          try{
+            const defaultPlzs = await getDefaultPlzs(handlerInput);
+          }
+          catch(err){
+            console.log(err);
+            return handlerInput.responseBuilder
+            .addElicitSlotDirective('plz')
+            .getResponse();
+          }
           
           if(defaultPlzs.length > 1) {
               return handlerInput.responseBuilder
@@ -272,6 +281,7 @@ const StartedGetCasesIntentHandler = {
           }
           else {
             console.log("No default plzs there and no slot given!!");
+
             return handlerInput.responseBuilder
             .addElicitSlotDirective('plz')
             .getResponse();
