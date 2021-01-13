@@ -42,8 +42,7 @@ async function updatePersistentAttributes(handlerInput, entry) {
 async function getDefaultPlzs(handlerInput) {
     const attributesManager = handlerInput.attributesManager;
     const attributes = await attributesManager.getPersistentAttributes() || {};
-    if(attributes.default_plzs) return attributes.default_plzs;
-    else return Error("No default plz found!");
+    return attributes.default_plzs;
 }
 
 async function addDefaultPlz(handlerInput, entry) {
@@ -260,18 +259,15 @@ const StartedGetCasesIntentHandler = {
       }
       
       if(!plz.value){
-          try{
             const defaultPlzs = await getDefaultPlzs(handlerInput);
-            console.log(defaultPlzs);
-          }
-          catch(err){
-            console.log(err);
-            console.log("teststeste");
-            return handlerInput.responseBuilder
-            .addElicitSlotDirective('plz')
-            .getResponse();
-          }
-          finally {
+            console.log("defaultplzs value: " + defaultPlzs);
+            if(!defaultPlzs){
+                console.log("I'm in!!")
+                return handlerInput.responseBuilder
+                .addElicitSlotDirective('plz')
+                .getResponse();
+            }
+
             if(defaultPlzs.length > 1) {
                 return handlerInput.responseBuilder
                     .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
@@ -288,7 +284,6 @@ const StartedGetCasesIntentHandler = {
               .addElicitSlotDirective('plz')
               .getResponse();
             }
-          }
       }
       return handlerInput.responseBuilder
         .addDelegateDirective(currentIntent)
