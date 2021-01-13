@@ -264,6 +264,7 @@ const StartedGetCasesIntentHandler = {
             if(!defaultPlzs){
                 console.log("I'm in!!")
                 return handlerInput.responseBuilder
+                .speak('Für welche Postleitzahl möchtest du die Fallzahlen wissen?')
                 .addElicitSlotDirective('plz')
                 .getResponse();
             }
