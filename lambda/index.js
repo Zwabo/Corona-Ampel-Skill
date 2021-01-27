@@ -84,6 +84,26 @@ async function overwriteDefaultPlz(handlerInput, entry, oldEntryName) {
     await attributesManager.savePersistentAttributes();
 }
 
+async function deleteDefaultPlz(handlerInput, entryToDelete) {
+    const attributesManager = handlerInput.attributesManager;
+    const attributes = await attributesManager.getPersistentAttributes() || {};
+    
+    let defaultPlzs = attributes.default_plzs;
+    
+    //Find entry to be overwritten and put new entry in its index
+    let i = defaultPlzs.findIndex(entry => entry.name === entryToDelete);
+    if(i === -1){
+        throw new Error('Es existiert kein Eintrag mit diesem Namen!');
+    }
+    
+    let filtered = array.filter((entryToDelete, i) => !entryToDelete);
+    
+    defaultPlzs = filtered;
+    
+    attributesManager.setPersistentAttributes(attributes);
+    await attributesManager.savePersistentAttributes();
+}
+
 function getWarnstufenColor(warnstufe) {
     let warnstufenArr = ["grün", "gelb", "orange", "rot"];
     return warnstufenArr[warnstufe - 1];
@@ -508,6 +528,29 @@ const GetDefaultPLZsIntentHandler = {
             .getResponse();
     }
 };
+const DeleteDefaultPlzIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'DeleteDefaultPlzIntent';
+    },
+    async handle(handlerInput) {
+        let entry = handlerInput.requestEnvelope.request.intent.slots.name.value;
+        let defaultPlzs = await getDefaultPlzs(handlerInput);
+
+        let speakOutput = "";
+        if(defaultPlzs) {
+            await deleteDefaultPlz(handlerInput, entry);
+            speakOutput = `Ich habe den Eintrag ${entry} für dich gelöscht!`;
+        }
+        else {
+            speakOutput = `Du hast derzeit keine Orte hinterlegt.`;
+        }
+        
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+};
 
 const YesIntentOverwritePlzHandler = {
     canHandle(handlerInput) {
@@ -674,7 +717,7 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
+        const speakOutput = 'Ich habe Probleme, das zu verstehen!';
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
         return handlerInput.responseBuilder
@@ -704,6 +747,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         SetDefaultPLZsConfirmNameIntentHandler,
         SetDefaultPLZsIntentHandler,
         GetDefaultPLZsIntentHandler,
+        DeleteDefaultPlzIntentHandler,
         YesIntentOverwritePlzHandler,
         NoIntentOverwritePlzHandler,
         OverwriteDefaultPlzIntentHandler,
