@@ -97,7 +97,7 @@ async function deleteDefaultPlz(handlerInput, entryToDelete) {
         throw new Error('Es existiert kein Eintrag mit diesem Namen!');
     }
     
-    let filtered = array.filter((entryToDelete, i) => !entryToDelete);
+    let filtered = defaultPlzs.filter((entryToDelete, i) => !entryToDelete);
     console.log(filtered);
     defaultPlzs = filtered;
     
@@ -540,8 +540,14 @@ const DeleteDefaultPlzIntentHandler = {
 
         let speakOutput = "";
         if(defaultPlzs) {
-            await deleteDefaultPlz(handlerInput, entry);
-            speakOutput = `Ich habe den Eintrag ${entry} für dich gelöscht!`;
+            try{
+                await deleteDefaultPlz(handlerInput, entry);
+                speakOutput = `Ich habe den Eintrag ${entry} für dich gelöscht!`;
+            }
+            catch(err){
+                speakOutput = err;
+                console.log(err);
+            }
         }
         else {
             speakOutput = `Du hast derzeit keine Orte hinterlegt.`;
