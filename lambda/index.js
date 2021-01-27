@@ -97,7 +97,7 @@ async function deleteDefaultPlz(handlerInput, entryToDelete) {
         throw new Error('Es existiert kein Eintrag mit diesem Namen!');
     }
     
-    let filtered = defaultPlzs.filter((entry, i) => entry ==! entryToDelete);
+    let filtered = defaultPlzs.filter(entry => entry.name ==! entryToDelete);
     console.log(filtered);
     defaultPlzs = filtered;
     
