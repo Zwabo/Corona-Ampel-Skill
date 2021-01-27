@@ -111,6 +111,49 @@
             }
           ],
           "samples": []
+        },
+        {
+          "name": "GetCasesIntent",
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery"
+            },
+            {
+              "name": "plz",
+              "type": "AMAZON.FOUR_DIGIT_NUMBER",
+              "samples": [
+                "Für {plz} bitte",
+                "{plz}",
+                "Für {plz}"
+              ]
+            }
+          ],
+          "samples": [
+            "Wie viele Fälle gibt es in {plz}",
+            "Sag mir die Corona Fälle für {plz}",
+            "Zeig mir wie viele Erkrankte es in meiner Stadt gibt",
+            "Wie viele Fälle gibt es in meiner Stadt",
+            "Wie hoch ist die Anzahl der Coronafälle",
+            "Zeig mir die aktuellen Fallzahlen",
+            "Wie viele Corona Tote gibt es in meinem Ort",
+            "Sag mir die Corona Fälle",
+            "Zeig mir die Corona Fälle für {plz}",
+            "Zeig mir die Corona Fälle für {name}",
+            "Wie viele Fälle gibt es in meinem Bezirk"
+          ]
+        },
+        {
+          "name": "GetDefaultPLZsIntent",
+          "slots": [],
+          "samples": [
+            "Wie heißen meine gespeicherten Orte",
+            "Welche Orte habe ich gespeichert",
+            "Wie heißen meine gespeicherten Postleitzahlen",
+            "Wie lauten meine Postleitzahlen",
+            "Welche Postleitzahlen sind gespeichert",
+            "Welche Postleitzahlen habe ich gespeichert"
+          ]
         }
       ],
       "types": [
@@ -222,6 +265,30 @@
               }
             }
           ]
+        },
+        {
+          "name": "GetCasesIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "plz",
+              "type": "AMAZON.FOUR_DIGIT_NUMBER",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1021877314370.733671295624"
+              }
+            }
+          ],
+          "delegationStrategy": "SKILL_RESPONSE"
         }
       ],
       "delegationStrategy": "ALWAYS"
@@ -271,8 +338,17 @@
             "value": "Nenne den Namen der Postleitzahl die du löschen möchtest."
           }
         ]
+      },
+      {
+        "id": "Elicit.Slot.1021877314370.733671295624",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Für welche Postleitzahl?"
+          }
+        ]
       }
     ]
   },
-  "version": "15"
+  "version": "23"
 }

@@ -144,6 +144,11 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
         }
         
         if(defaultPlzs.length > 1){
+            let speakOutput = 'Du hast mehrere Postleitzahlen mit folgenden Namen hinterlegt: '
+            const defaultPlzs = await getDefaultPlzs(handlerInput);
+            defaultPlzs.map((entry, i) => speakOutput += `Der ${i + 1}. Ort mit der Postleitzahl ${entry.plz} heißt ${entry.name}. `);
+            speakOutput += 'Bitte nenne mir einen dieser Namen!'
+
             return handlerInput.responseBuilder
                 .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
                 .addElicitSlotDirective('name')
@@ -266,8 +271,6 @@ const StartedGetCasesIntentHandler = {
       }
       
       if(!plz.value){
-            const defaultPlzs = await getDefaultPlzs(handlerInput);
-
             if(!defaultPlzs){
                 return handlerInput.responseBuilder
                 .speak('Für welche Postleitzahl möchtest du die Fallzahlen wissen?')
@@ -276,6 +279,11 @@ const StartedGetCasesIntentHandler = {
             }
 
             if(defaultPlzs.length > 1) {
+                let speakOutput = 'Du hast mehrere Postleitzahlen mit folgenden Namen hinterlegt: '
+                const defaultPlzs = await getDefaultPlzs(handlerInput);
+                defaultPlzs.map((entry, i) => speakOutput += `Der ${i + 1}. Ort mit der Postleitzahl ${entry.plz} heißt ${entry.name}. `);
+                speakOutput += 'Bitte nenne mir einen dieser Namen!'
+
                 return handlerInput.responseBuilder
                     .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
                     .addElicitSlotDirective('name')
