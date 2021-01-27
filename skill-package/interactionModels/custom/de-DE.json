@@ -154,6 +154,33 @@
             "Welche Postleitzahlen sind gespeichert",
             "Welche Postleitzahlen habe ich gespeichert"
           ]
+        },
+        {
+          "name": "DeleteDefaultPlzIntent",
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery",
+              "samples": [
+                "Postleitzahl {name}",
+                "Eintrag {name}",
+                "Den Eintrag {name}",
+                "Die Postleitzahl mit dem Namen {name}",
+                "{name}"
+              ]
+            }
+          ],
+          "samples": [
+            "Lösche die gespeicherte Postleitzahl {name}",
+            "Lösche die Standard Postleitzahl mit dem Namen {name}",
+            "Lösche den Eintrag mit dem Namen {name}",
+            "Lösche den Eintrag {name}",
+            "Lösche Eintrag {name}",
+            "Lösche einen Eintrag",
+            "Lösche Postleitzahl",
+            "Lösche eine gespeicherte Postleitzahl",
+            "Lösche eine Standard Postleitzahl"
+          ]
         }
       ],
       "types": [
@@ -289,6 +316,22 @@
             }
           ],
           "delegationStrategy": "SKILL_RESPONSE"
+        },
+        {
+          "name": "DeleteDefaultPlzIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "name",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1252853579568.1534794101778"
+              }
+            }
+          ]
         }
       ],
       "delegationStrategy": "ALWAYS"
@@ -347,8 +390,17 @@
             "value": "Für welche Postleitzahl?"
           }
         ]
+      },
+      {
+        "id": "Elicit.Slot.1252853579568.1534794101778",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Bitte nenne mir den Namen des Eintrags den du löschen möchtest"
+          }
+        ]
       }
     ]
   },
-  "version": "23"
+  "version": "26"
 }
