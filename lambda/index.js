@@ -92,6 +92,7 @@ async function deleteDefaultPlz(handlerInput, entryToDelete) {
     
     //Find entry to be overwritten and put new entry in its index
     let i = defaultPlzs.findIndex(entry => entry.name === entryToDelete);
+    console.log(`index: ${i}, entry: ${entryToDelete}`)
     if(i === -1){
         throw new Error('Es existiert kein Eintrag mit diesem Namen!');
     }
