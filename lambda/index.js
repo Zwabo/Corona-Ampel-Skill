@@ -150,7 +150,7 @@ const StartedGetCoronaAmpelStatusIntentHandler = {
             speakOutput += 'Bitte nenne mir einen dieser Namen!'
 
             return handlerInput.responseBuilder
-                .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
+                .speak(speakOutput)
                 .addElicitSlotDirective('name')
                 .getResponse();
         }
@@ -285,7 +285,7 @@ const StartedGetCasesIntentHandler = {
                 speakOutput += 'Bitte nenne mir einen dieser Namen!'
 
                 return handlerInput.responseBuilder
-                    .speak('Du hast mehrere Postleitzahlen hinterlegt. Bitte sag mir den Namen den du einer der Postleitzahlen gegeben hast.')
+                    .speak(speakOutput)
                     .addElicitSlotDirective('name')
                     .getResponse();
             }
