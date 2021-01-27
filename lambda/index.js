@@ -98,7 +98,7 @@ async function deleteDefaultPlz(handlerInput, entryToDelete) {
     }
     
     let filtered = array.filter((entryToDelete, i) => !entryToDelete);
-    
+    console.log(filtered);
     defaultPlzs = filtered;
     
     attributesManager.setPersistentAttributes(attributes);
