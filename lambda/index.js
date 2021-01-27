@@ -543,7 +543,7 @@ const DeleteDefaultPlzIntentHandler = {
                 speakOutput = `Ich habe den Eintrag ${entry} für dich gelöscht!`;
             }
             catch(err){
-                speakOutput = err;
+                speakOutput = err.message;
                 console.log(err);
             }
         }
